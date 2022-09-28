@@ -199,6 +199,9 @@
                             <tr>
                                 <td><a href="uploads/Callback.cs" download="">6. Download This Callback Script for every modul</a></td>
                             </tr>
+                            <tr>
+                                <td><a href="uploads/Set-up Unity Test Runner.pdf" download="">7. Download tutorial for preparing Unity Test Runner</a></td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
