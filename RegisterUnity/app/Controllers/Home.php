@@ -25,7 +25,7 @@ class Home extends BaseController
             ];
             // $data['users'] = $this->users->findAll();
             // $data['tests'] = $this->users->getAllTest();
-            return view('admin/index', $data);
+            return view('Admin/index', $data);
         }
         return redirect()->to('login');
     }
@@ -129,7 +129,7 @@ class Home extends BaseController
                 throw new \CodeIgniter\Exceptions\PageNotFoundException('Data Pegawai Tidak ditemukan !');
             }
 
-            return view('admin/edit', $data);
+            return view('Admin/edit', $data);
         }
         return redirect()->to('login');
     }
@@ -183,7 +183,7 @@ class Home extends BaseController
     {
         if ($this->session->get('level') == "admin") {
             $data['tests'] = $this->users->getAllTest();
-            return view('admin/test_data', $data);
+            return view('Admin/test_data', $data);
         }
         return redirect()->to('login');
     }
@@ -230,14 +230,14 @@ class Home extends BaseController
         header('Cache-Control: max-age=0');
 
         $writer->save('php://output');
-        return view('admin/test_data', $data);
+        return view('Admin/test_data', $data);
     }
 
     public function profile()
     {
         if ($this->session->get('level') == "admin") {
             $data['users'] = $this->users->findAll();
-            return view('admin/index', $data);
+            return view('Admin/index', $data);
         }
         return redirect()->to('login');
     }

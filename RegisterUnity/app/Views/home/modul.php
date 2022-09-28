@@ -208,11 +208,15 @@
                                         <td><?= $row->judul_materi; ?></td>
                                         <!-- Mengganti dengan form agar dapat download from database -->
                                         <td><a href="<?= base_url("UnityHome/downloadModul/$row->id") ?>">Download Modul</a>
-                                        <?php if($no == 1){ ?>
-                                            <a href="/uploads/Pretest_Test.cs" download="">Download Pretest Test</a>
-                                        <?php } ?>
+                                            <?php if ($no == 1) { ?>
+                                                <a href="/uploads/Pretest_Test.cs" download="">Download Pretest Test</a>
+                                            <?php } ?>
                                         </td>
-                                        <td><a href="/uploads/Modul<?=$no;?>.cs" download="">Download Test File</a></td>
+                                        <?php if ($no == 8) {
+                                            continue;
+                                        } else { ?>
+                                            <td><a href="/uploads/Modul<?= $no; ?>Test.cs" download="">Download Test File</a></td>
+                                        <?php } ?>
                                         <td><?= $row->created_at; ?></td>
                                         <?php $no++; ?>
                                     </tr>
