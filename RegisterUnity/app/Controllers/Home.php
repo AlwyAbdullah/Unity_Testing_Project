@@ -14,6 +14,7 @@ class Home extends BaseController
     {
         $this->session = session();
         $this->users = new UserModel();
+        $this->fileModel = new FileModel();
     }
 
     public function index()
@@ -23,8 +24,6 @@ class Home extends BaseController
                 'users' => $this->users->getUsers(),
                 'tests' => $this->users->getAllTest()
             ];
-            // $data['users'] = $this->users->findAll();
-            // $data['tests'] = $this->users->getAllTest();
             return view('Admin/index', $data);
         }
         return redirect()->to('login');
@@ -44,7 +43,7 @@ class Home extends BaseController
     {
         if ($this->session->get('level') == "admin") {
             helper(['form']);
-            $data = [];
+            $data = ["modul" => $this->fileModel->findAll(), ''];
             return view('Admin/add_modul', $data);
         }
         return redirect()->to('login');
@@ -58,12 +57,6 @@ class Home extends BaseController
 
         $file =  $this->request->getFile('materi');
         $fileName = $file->getName();
-        // if ($file->isValid() && !$file->hasMoved()) {
-        //     $file->move(ROOTPATH . 'public/uploads/', $fileName);
-        //     session()->setFlashData('message', 'Berhasil upload');
-        // } else {
-        //     session()->setFlashData('message', 'Gagal upload');
-        // }
 
         $rules = [
             'judul_materi'          => 'required|is_unique[modul.judul_materi]',
@@ -147,13 +140,6 @@ class Home extends BaseController
         ];
 
         if ($this->validate($rules)) {
-            // $model = new UserModel();
-            // $data = [
-            //     'nama'     => $this->request->getVar('nama'),
-            //     'email'    => $this->request->getVar('email'),
-            //     'nim'      => $this->request->getVar('nim'),
-            //     'level'    => $this->request->getVar('level'),
-            // ];
             $this->users->update($id, [
                 'nama'     => $this->request->getVar('nama'),
                 'email'    => $this->request->getVar('email'),
