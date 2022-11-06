@@ -93,9 +93,7 @@ public class Callback : ICallbacks
             hasil_array[i] = hasil;
             hasil_string += hasil + " ";
         }
-        Debug.Log("AAAAAAAAa: " + hasil_array.Length);
-        Debug.Log("DUMMY: " + hasil_array[0]);
-        Debug.Log("DUMMY: " + hasil_array[1]);
+        
         Debug.Log("String: " + hasil_string);
 
         hasil_array = hasil_string.Split(" ");
@@ -112,29 +110,6 @@ public class Callback : ICallbacks
         UnityWebRequest www = UnityWebRequest.Post("http://localhost/unitysql/register.php", form);
         www.SendWebRequest();
     }
-
-    // string addLink = link +  "?total_test=" + result + "&test_passed=" + pass + "&test_failed=" + failed; 
-    // WWW www = new WWW(addLink);
 }
-
-// IEnumerator Register(ITestResultAdaptor result)
-// {
-//     // Register Example
-//     WWWForm form = new WWWForm();
-//     form.AddField("total_test", totalTest);
-//     form.AddField("test_passed", result.PassCount);
-//     form.AddField("test_failed", result.FailCount);
-//     UnityWebRequest www = UnityWebRequest.Post("http://localhost/unitysql/register.php", form);
-//     yield return www.SendWebRequest();
-
-//     if (www.result != UnityWebRequest.Result.Success)
-//     {
-//         Debug.Log(www.error);
-//     }
-//     else 
-//     {
-//         Debug.Log("Form upload complete!");
-//     }
-// }
 
 

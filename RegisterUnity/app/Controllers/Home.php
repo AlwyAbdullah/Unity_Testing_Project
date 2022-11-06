@@ -4,9 +4,12 @@ namespace App\Controllers;
 
 use App\Models\FileModel;
 use App\Models\UserModel;
-use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
+// use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
+// use PhpOffice\PhpSpreadsheet\Spreadsheet;
+// use PhpOffice\PhpSpreadsheet\Writer\Xlsx as WriterXlsx;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
-use PhpOffice\PhpSpreadsheet\Writer\Xlsx as WriterXlsx;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use PhpOffice\PhpSpreadsheet\IOFactory;
 
 class Home extends BaseController
 {
@@ -207,13 +210,23 @@ class Home extends BaseController
         }
 
         // tulis dalam format .xlsx
-        $writer = new WriterXlsx($spreadsheet);
-        $fileName = 'Data Siswa';
-
+        $writer = new Xlsx($spreadsheet);
+        $fileName = 'DataTesting';
+        
         // Redirect hasil generate xlsx ke web client
-        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+		header("Content-Type: application/vnd.ms-excel");
         header('Content-Disposition: attachment;filename=' . $fileName . '.xlsx');
-        header('Cache-Control: max-age=0');
+        header('Expires: 0');
+
+		header('Cache-Control: must-revalidate');
+
+		header('Pragma: public');
+
+		header('Content-Length:' . filesize($fileName));
+
+		flush();
+
+		readfile($fileName);
 
         $writer->save('php://output');
         return view('Admin/test_data', $data);
