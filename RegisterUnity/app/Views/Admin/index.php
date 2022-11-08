@@ -215,7 +215,6 @@
                                                 <td><?= $user->level ?></td>
                                                 <td><a href="<?= base_url("home/edit/$user->id"); ?>" class="btn btn-warning">Edit</a> <a href="<?= base_url("home/delete/$user->id") ?>" class="btn btn-danger" onclick="return confirm('Apakah Anda yakin ingin menghapus data ?')">Delete</a> </td>
                                             </tr>
-
                                         <?php $no++;
                                         endforeach ?>
                                     </tbody>

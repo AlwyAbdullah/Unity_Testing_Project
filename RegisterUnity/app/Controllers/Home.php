@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Models\FileModel;
 use App\Models\UserModel;
+use App\Models\TestResultModel;
 // use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
 // use PhpOffice\PhpSpreadsheet\Spreadsheet;
 // use PhpOffice\PhpSpreadsheet\Writer\Xlsx as WriterXlsx;
@@ -18,6 +19,7 @@ class Home extends BaseController
         $this->session = session();
         $this->users = new UserModel();
         $this->fileModel = new FileModel();
+        $this->testModel = new TestResultModel();
     }
 
     public function index()
@@ -161,17 +163,74 @@ class Home extends BaseController
     {
         $data = $this->users->find($id);
         if (empty($data)) {
-            throw new \CodeIgniter\Exceptions\PageNotFoundException('Data Pegawai Tidak ditemukan !');
+            throw new \CodeIgniter\Exceptions\PageNotFoundException('Data User Tidak ditemukan !');
         }
         $this->users->delete($id);
         session()->setFlashdata('message', 'Delete Data User Berhasil');
         return redirect()->to('/Home');
     }
 
+    public function deleteTest($id)
+    {
+        $data = $this->testModel->getTestId($id);
+        if (empty($data)) {
+            throw new \CodeIgniter\Exceptions\PageNotFoundException('Data Test User Tidak ditemukan !');
+        }
+        $this->testModel->delete($id);
+        session()->setFlashdata('message', 'Delete Data Hasil Test Berhasil');
+        return redirect()->to('Home/testData');
+    }
+
+    public function editTest($id)
+    {
+        if ($this->session->get('level') == "admin") {
+            $model = new TestResultModel();
+            $data['tests'] = $model->where('id_test', $id)->first();
+            if (empty($data['tests'])) {
+                throw new \CodeIgniter\Exceptions\PageNotFoundException('Data Pegawai Tidak ditemukan !');
+            }
+
+            return view('Admin/edit_test', $data);
+        }
+        return redirect()->to('login');
+    }
+
+    public function updateTest($id)
+    {
+        //include helper form
+        helper(['form']);
+        //set rules validation form
+        $rules = [
+            'nim_users'              => 'required|min_length[10]|max_length[20]',
+            'total_test'             => 'required',
+            'test_passed'            => 'required',
+            'test_failed'            => 'required',
+            'nama_class'             => 'required',
+            'tanggal_test'           => 'required'
+        ];
+
+        if ($this->validate($rules)) {
+            $this->users->update($id, [
+                'nim_users'         => $this->request->getVar('nim_users'),
+                'total_test'        => $this->request->getVar('total_test'),
+                'test_passed'       => $this->request->getVar('test_passed'),
+                'test_failed'       => $this->request->getVar('test_failed'),
+                'nama_class'        => $this->request->getVar('nama_class'),
+                'tanggal_test'      => $this->request->getVar('tanggal_test'),
+            ]);
+            session()->setFlashdata('message', 'Edit Test Data User Berhasil');
+            return redirect()->to('/Home/testData');
+        } else {
+            $data['validation'] = $this->validator;
+            return redirect()->back();
+        }
+    }
+
     public function testData()
     {
         if ($this->session->get('level') == "admin") {
             $data['tests'] = $this->users->getAllTest();
+            $data['allTest'] = $this->testModel->findAll();
             return view('Admin/test_data', $data);
         }
         return redirect()->to('login');

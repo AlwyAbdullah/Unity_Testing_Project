@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Admin</title>
+    <title>SB Admin 2 - Tables</title>
 
     <!-- Custom fonts for this template -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
@@ -17,8 +17,13 @@
     <link href="/css/all.min.css" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 
+    <!-- Font Icon -->
+    <link rel="stylesheet" href="/fonts/material-icon/css/material-design-iconic-font.min.css">
+
+
     <!-- Custom styles for this template -->
     <link href="/css/sb-admin-2.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/style.css">
 
     <!-- Custom styles for this page -->
     <link href="/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
@@ -60,15 +65,15 @@
 
             <!-- Nav Item - Pages Collapse Menu -->
             <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true" aria-controls="collapsePages">
+                <a class="nav-link collapsed" href="<?= base_url('home/addUser') ?>">
                     <i class="fas fa-fw fa-add"></i>
-                    <span>Add</span>
+                    <span>Add User</span>
                 </a>
-                <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Tambah Data:</h6>
-                        <a class="collapse-item" href="<?= base_url('Home/addUser'); ?> ">User</a>
-                        <a class="collapse-item" href="<?= base_url('Home/addModul'); ?>">Modul</a>
+                        <h6 class="collapse-header">Custom Components:</h6>
+                        <a class="collapse-item" href="buttons.html">Buttons</a>
+                        <a class="collapse-item" href="cards.html">Cards</a>
                     </div>
                 </div>
             </li>
@@ -135,8 +140,41 @@
                         </button>
                     </form>
 
+                    <!-- Topbar Search -->
+                    <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
+                        <div class="input-group">
+                            <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
+                            <div class="input-group-append">
+                                <button class="btn btn-primary" type="button">
+                                    <i class="fas fa-search fa-sm"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+
                     <!-- Topbar Navbar -->
                     <ul class="navbar-nav ml-auto">
+
+                        <!-- Nav Item - Search Dropdown (Visible Only XS) -->
+                        <li class="nav-item dropdown no-arrow d-sm-none">
+                            <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fas fa-search fa-fw"></i>
+                            </a>
+                            <!-- Dropdown - Messages -->
+                            <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in" aria-labelledby="searchDropdown">
+                                <form class="form-inline mr-auto w-100 navbar-search">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
+                                        <div class="input-group-append">
+                                            <button class="btn btn-primary" type="button">
+                                                <i class="fas fa-search fa-sm"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </li>
+
                         <div class="topbar-divider d-none d-sm-block"></div>
 
                         <!-- Nav Item - User Information -->
@@ -150,6 +188,14 @@
                                 <a class="dropdown-item" href="#">
                                     <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Profile
+                                </a>
+                                <a class="dropdown-item" href="#">
+                                    <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Settings
+                                </a>
+                                <a class="dropdown-item" href="#">
+                                    <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Activity Log
                                 </a>
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
@@ -168,64 +214,38 @@
                 <div class="container-fluid">
 
                     <!-- Page Heading -->
-                    <h1 class="h3 mb-2 text-gray-800">Data Test User</h1>
-                    <!-- <p class="mb-4">DataTables is a third party plugin that is used to generate the demo table below.
-                        For more information about DataTables, please visit the <a target="_blank" href="https://datatables.net">official DataTables documentation</a>.</p> -->
-                    <?php if (!empty(session()->getFlashdata('message'))) : ?>
-                        <div class="alert alert-success alert-dismissible fade show" role="alert">
-                            <?php echo session()->getFlashdata('message'); ?>
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
+                    <h2 class="form-title text-gray-800">Edit User</h2>
+                    <?php if (isset($validation)) : ?>
+                        <div class="alert alert-danger"><?= $validation->listErrors() ?></div>
                     <?php endif; ?>
+                    <form method="POST" action="<?= base_url('Home/update/' . $users->id); ?>">
+                        <?= csrf_field(); ?>
+                        <div class="form-group">
+                            <label for="name"><i class="zmdi zmdi-account material-icons-name"></i></label>
+                            <input type="text" name="nama" id="nama" placeholder="Your Name" required value="<?= $users->nama ?>" />
+                        </div>
+                        <div class="form-group">
+                            <label for="email"><i class="zmdi zmdi-email"></i></label>
+                            <input type="email" name="email" id="email" placeholder="Your Email" required value="<?= $users->email ?>" />
+                        </div>
+                        <div class="form-group">
+                            <label for="nim"><i class="zmdi zmdi-format-list-numbered"></i></label>
+                            <input type="nim" name="nim" id="nim" placeholder="Your NIM" required value="<?= $users->nim ?>" ? />
+                        </div>
+                        <div class="form-group">
+                            <p>Level</p>
+                            <select class="form-control" id="exampleFormControlSelect1" required name="level">
+                                <option disabled selected value> -- select an option -- </option>
+                                <option value="user" <?= ($users->level == "user" ? "selected" : "") ?>>User</option>
+                                <option value="admin" <?= ($users->level == "admin" ? "selected" : "") ?>>Admin</option>
+                            </select>
+                        </div>
+                        <div class="form-group form-button">
+                            <input type="submit" name="signup" id="signup" class="form-submit" value="Save" />
+                        </div>
+                    </form>
                     <!-- DataTales Example -->
-                    <div class="card shadow mb-4">
-                        <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold text-primary">DataTables Example</h6>
-                            <a href="<?= base_url('Home/exportToExcel'); ?>" class="btn btn-primary"><i class="fa fa-download"></i> Download Excel</a>
-                        </div>
-                        <div class="card-body">
-                            <div class="table-responsive">
-                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                                    <thead>
-                                        <tr>
-                                            <th>No</th>
-                                            <th>Nama</th>
-                                            <th>nim</th>
-                                            <th>Total Test</th>
-                                            <th>Test Berhasil</th>
-                                            <th>Test Gagal</th>
-                                            <th>Nama Class</th>
-                                            <th>Tanggal Test</th>
-                                            <th>Score</th>
-                                            <th>Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <?php
-                                        $no = 1;
-                                        foreach ($tests as $test) : ?>
-                                            <tr>
-                                                <td><?= $no; ?></td>
-                                                <td><?= $test->nama ?></td>
-                                                <td><?= $test->nim ?></td>
-                                                <td><?= $test->total_test ?></td>
-                                                <td><?= $test->test_passed ?></td>
-                                                <td><?= $test->test_failed ?></td>
-                                                <td><?= $test->nama_class ?></td>
-                                                <td><?= $test->tanggal_test ?></td>
-                                                <td><?= round(($test->test_passed / $test->total_test) * 100, 2) ?>%</td>
-                                                <td><a href="<?= base_url("home/editTest/$test->id_test"); ?>" class="btn btn-warning">Edit</a> <a href="<?= base_url("home/deleteTest/$test->id_test") ?>" class="btn btn-danger" onclick="return confirm('Apakah Anda yakin ingin menghapus data ?')">Delete</a> </td>
-                                            </tr>
-                                        <?php $no++;
-                                        endforeach ?>
 
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
                 </div>
                 <!-- /.container-fluid -->
 
@@ -266,7 +286,7 @@
                 <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                    <a class="btn btn-primary" href="<?= base_url('Login/logout') ?>">Logout</a>
+                    <a class="btn btn-primary" href="<?= base_url("login/logout") ?>">Logout</a>
                 </div>
             </div>
         </div>
@@ -286,15 +306,6 @@
     <!-- Custom scripts for all pages-->
     <script src="/js/sb-admin-2.min.js"></script>
 
-    <!-- Page level plugins -->
-    <script src="/datatables/jquery.dataTables.min.js"></script>
-    <script src="/datatables/dataTables.bootstrap4.min.js"></script>
-
-    <script>
-        $(document).ready(function() {
-            $('#dataTable').DataTable();
-        });
-    </script>
 </body>
 
 </html>
