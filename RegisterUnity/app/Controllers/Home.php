@@ -210,7 +210,7 @@ class Home extends BaseController
         ];
 
         if ($this->validate($rules)) {
-            $this->users->update($id, [
+            $this->testModel->update($id, [
                 'nim_users'         => $this->request->getVar('nim_users'),
                 'total_test'        => $this->request->getVar('total_test'),
                 'test_passed'       => $this->request->getVar('test_passed'),

@@ -49,7 +49,7 @@
             <hr class="sidebar-divider my-0">
 
             <!-- Nav Item - Dashboard -->
-            <li class="nav-item">
+            <li class="nav-item active">
                 <a class="nav-link" href="<?= base_url('Home') ?>">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Dashboard</span></a>
@@ -65,15 +65,15 @@
 
             <!-- Nav Item - Pages Collapse Menu -->
             <li class="nav-item">
-                <a class="nav-link collapsed" href="<?= base_url('home/addUser') ?>">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true" aria-controls="collapsePages">
                     <i class="fas fa-fw fa-add"></i>
-                    <span>Add User</span>
+                    <span>Add</span>
                 </a>
-                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Custom Components:</h6>
-                        <a class="collapse-item" href="buttons.html">Buttons</a>
-                        <a class="collapse-item" href="cards.html">Cards</a>
+                        <h6 class="collapse-header">Tambah Data:</h6>
+                        <a class="collapse-item" href="<?= base_url('Home/addUser'); ?> ">User</a>
+                        <a class="collapse-item" href="<?= base_url('Home/addModul'); ?>">Modul</a>
                     </div>
                 </div>
             </li>
@@ -107,7 +107,7 @@
             </li> -->
 
             <!-- Nav Item - Tables -->
-            <li class="nav-item active">
+            <li class="nav-item">
                 <a class="nav-link" href="<?= base_url('Home/testData'); ?>">
                     <i class="fas fa-fw fa-table"></i>
                     <span>Data Testing</span></a>
@@ -140,40 +140,9 @@
                         </button>
                     </form>
 
-                    <!-- Topbar Search -->
-                    <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
-                        <div class="input-group">
-                            <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
-                            <div class="input-group-append">
-                                <button class="btn btn-primary" type="button">
-                                    <i class="fas fa-search fa-sm"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </form>
 
                     <!-- Topbar Navbar -->
                     <ul class="navbar-nav ml-auto">
-
-                        <!-- Nav Item - Search Dropdown (Visible Only XS) -->
-                        <li class="nav-item dropdown no-arrow d-sm-none">
-                            <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="fas fa-search fa-fw"></i>
-                            </a>
-                            <!-- Dropdown - Messages -->
-                            <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in" aria-labelledby="searchDropdown">
-                                <form class="form-inline mr-auto w-100 navbar-search">
-                                    <div class="input-group">
-                                        <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
-                                        <div class="input-group-append">
-                                            <button class="btn btn-primary" type="button">
-                                                <i class="fas fa-search fa-sm"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                        </li>
 
                         <div class="topbar-divider d-none d-sm-block"></div>
 
@@ -188,14 +157,6 @@
                                 <a class="dropdown-item" href="#">
                                     <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Profile
-                                </a>
-                                <a class="dropdown-item" href="#">
-                                    <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Settings
-                                </a>
-                                <a class="dropdown-item" href="#">
-                                    <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Activity Log
                                 </a>
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
@@ -214,31 +175,35 @@
                 <div class="container-fluid">
 
                     <!-- Page Heading -->
-                    <h2 class="form-title text-gray-800">Edit User</h2>
+                    <h2 class="form-title text-gray-800">Edit Hasil Test User</h2>
                     <?php if (isset($validation)) : ?>
                         <div class="alert alert-danger"><?= $validation->listErrors() ?></div>
                     <?php endif; ?>
-                    <form method="POST" action="<?= base_url('Home/update/' . $users->id); ?>">
+                    <form method="POST" action="<?= base_url('Home/updateTest/' . $tests->id_test); ?>">
                         <?= csrf_field(); ?>
                         <div class="form-group">
                             <label for="name"><i class="zmdi zmdi-account material-icons-name"></i></label>
-                            <input type="text" name="nama" id="nama" placeholder="Your Name" required value="<?= $users->nama ?>" />
+                            <input type="number" name="nim_users" id="nim_users" placeholder="Your NIM" required value="<?= $tests->nim_users ?>" />
                         </div>
                         <div class="form-group">
-                            <label for="email"><i class="zmdi zmdi-email"></i></label>
-                            <input type="email" name="email" id="email" placeholder="Your Email" required value="<?= $users->email ?>" />
+                            <label for="total_test"><i class="zmdi zmdi-format-list-numbered"></i></label>
+                            <input type="number" name="total_test" id="total_test" placeholder="Total Test (From Unity)" required value="<?= $tests->total_test ?>" />
                         </div>
                         <div class="form-group">
-                            <label for="nim"><i class="zmdi zmdi-format-list-numbered"></i></label>
-                            <input type="nim" name="nim" id="nim" placeholder="Your NIM" required value="<?= $users->nim ?>" ? />
+                            <label for="test_passed"><i class="zmdi zmdi-format-list-numbered"></i></label>
+                            <input type="number" name="test_passed" id="test_passed" placeholder="Test Passed (From Unity)" required value="<?= $tests->test_passed ?>" ? />
                         </div>
                         <div class="form-group">
-                            <p>Level</p>
-                            <select class="form-control" id="exampleFormControlSelect1" required name="level">
-                                <option disabled selected value> -- select an option -- </option>
-                                <option value="user" <?= ($users->level == "user" ? "selected" : "") ?>>User</option>
-                                <option value="admin" <?= ($users->level == "admin" ? "selected" : "") ?>>Admin</option>
-                            </select>
+                            <label for="test_failed"><i class="zmdi zmdi-format-list-numbered"></i></label>
+                            <input type="number" name="test_failed" id="test_failed" placeholder="Test Failed (From Unity)" required value="<?= $tests->test_failed ?>" ? />
+                        </div>
+                        <div class="form-group">
+                            <label for="nama_class"><i class="zmdi zmdi-present-to-all"></i></label>
+                            <input type="text" name="nama_class" id="nama_class" placeholder="Nama Class Testing (From Unity)" required value="<?= $tests->nama_class ?>" ? />
+                        </div>
+                        <div class="form-group">
+                            <label for="tanggal_test"><i class="zmdi zmdi-calendar"></i></label>
+                            <input type="datetime-local" step="1" name="tanggal_test" id="tanggal_test" placeholder="Tanggal Testing (From Unity)" required value="<?= $tests->tanggal_test ?>" ? />
                         </div>
                         <div class="form-group form-button">
                             <input type="submit" name="signup" id="signup" class="form-submit" value="Save" />
