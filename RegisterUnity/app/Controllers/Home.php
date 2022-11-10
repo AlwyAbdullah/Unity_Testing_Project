@@ -170,6 +170,49 @@ class Home extends BaseController
         return redirect()->to('/Home');
     }
 
+    public function addUserTest()
+    {
+        if ($this->session->get('level') == "admin") {
+            helper(['form']);
+            $data = [];
+            return view('Admin/add_test_user', $data);
+        }
+        return redirect()->to('login');
+    }
+
+    public function saveUserTest()
+    {
+        //include helper form
+        helper(['form', 'url']);
+
+        $rules = [
+            'nim_users'              => 'required|min_length[10]|max_length[20]',
+            'total_test'             => 'required',
+            'test_passed'            => 'required',
+            'test_failed'            => 'required',
+            'nama_class'             => 'required',
+            'tanggal_test'           => 'required'
+        ];
+
+        if ($this->validate($rules)) {
+            $model = new TestResultModel();
+            $data = [
+                'nim_users'         => $this->request->getVar('nim_users'),
+                'total_test'        => $this->request->getVar('total_test'),
+                'test_passed'       => $this->request->getVar('test_passed'),
+                'test_failed'       => $this->request->getVar('test_failed'),
+                'nama_class'        => $this->request->getVar('nama_class'),
+                'tanggal_test'      => $this->request->getVar('tanggal_test'),
+            ];
+            $model->save($data);
+            session()->setFlashdata('message', 'Tambah Test Data User Berhasil');
+            return redirect()->to('/Home/testData');
+        } else {
+            $data['validation'] = $this->validator;
+            return redirect()->back();
+        }
+    }
+
     public function deleteTest($id)
     {
         $data = $this->testModel->getTestId($id);
@@ -271,21 +314,21 @@ class Home extends BaseController
         // tulis dalam format .xlsx
         $writer = new Xlsx($spreadsheet);
         $fileName = 'DataTesting';
-        
+
         // Redirect hasil generate xlsx ke web client
-		header("Content-Type: application/vnd.ms-excel");
+        header("Content-Type: application/vnd.ms-excel");
         header('Content-Disposition: attachment;filename=' . $fileName . '.xlsx');
         header('Expires: 0');
 
-		header('Cache-Control: must-revalidate');
+        header('Cache-Control: must-revalidate');
 
-		header('Pragma: public');
+        header('Pragma: public');
 
-		header('Content-Length:' . filesize($fileName));
+        header('Content-Length:' . filesize($fileName));
 
-		flush();
+        flush();
 
-		readfile($fileName);
+        readfile($fileName);
 
         $writer->save('php://output');
         return view('Admin/test_data', $data);

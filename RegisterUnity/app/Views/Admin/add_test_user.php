@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Admin</title>
+    <title>SB Admin 2 - Tables</title>
 
     <!-- Custom fonts for this template -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
@@ -17,8 +17,13 @@
     <link href="/css/all.min.css" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 
+    <!-- Font Icon -->
+    <link rel="stylesheet" href="/fonts/material-icon/css/material-design-iconic-font.min.css">
+
+
     <!-- Custom styles for this template -->
     <link href="/css/sb-admin-2.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/style.css">
 
     <!-- Custom styles for this page -->
     <link href="/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
@@ -102,7 +107,7 @@
             </li> -->
 
             <!-- Nav Item - Tables -->
-            <li class="nav-item active">
+            <li class="nav-item">
                 <a class="nav-link" href="<?= base_url('Home/testData'); ?>">
                     <i class="fas fa-fw fa-table"></i>
                     <span>Data Testing</span></a>
@@ -158,7 +163,6 @@
                                 </a>
                             </div>
                         </li>
-
                     </ul>
 
                 </nav>
@@ -168,65 +172,41 @@
                 <div class="container-fluid">
 
                     <!-- Page Heading -->
-                    <h1 class="h3 mb-2 text-gray-800">Data Test User</h1>
-                    <!-- <p class="mb-4">DataTables is a third party plugin that is used to generate the demo table below.
-                        For more information about DataTables, please visit the <a target="_blank" href="https://datatables.net">official DataTables documentation</a>.</p> -->
-                    <?php if (!empty(session()->getFlashdata('message'))) : ?>
-                        <div class="alert alert-success alert-dismissible fade show" role="alert">
-                            <?php echo session()->getFlashdata('message'); ?>
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
+                    <h2 class="form-title text-gray-800">Add Data Test User</h2>
+                    <?php if (isset($validation)) : ?>
+                        <div class="alert alert-danger"><?= $validation->listErrors() ?></div>
                     <?php endif; ?>
+                    <form method="POST" action="<?= base_url('Home/saveUserTest/'); ?>" class="register-form" id="register-form">
+                        <div class="form-group">
+                            <label for="name"><i class="zmdi zmdi-account material-icons-name"></i></label>
+                            <input type="number" name="nim_users" id="nim_users" placeholder="Your NIM" required />
+                        </div>
+                        <div class="form-group">
+                            <label for="total_test"><i class="zmdi zmdi-format-list-numbered"></i></label>
+                            <input type="number" name="total_test" id="total_test" placeholder="Total Test (From Unity)" required/>
+                        </div>
+                        <div class="form-group">
+                            <label for="test_passed"><i class="zmdi zmdi-format-list-numbered"></i></label>
+                            <input type="number" name="test_passed" id="test_passed" placeholder="Test Passed (From Unity)" required/>
+                        </div>
+                        <div class="form-group">
+                            <label for="test_failed"><i class="zmdi zmdi-format-list-numbered"></i></label>
+                            <input type="number" name="test_failed" id="test_failed" placeholder="Test Failed (From Unity)" required />
+                        </div>
+                        <div class="form-group">
+                            <label for="nama_class"><i class="zmdi zmdi-present-to-all"></i></label>
+                            <input type="text" name="nama_class" id="nama_class" placeholder="Nama Class Testing (From Unity)" required/>
+                        </div>
+                        <div class="form-group">
+                            <label for="tanggal_test"><i class="zmdi zmdi-calendar"></i></label>
+                            <input type="datetime-local" step="1" name="tanggal_test" id="tanggal_test" placeholder="Tanggal Testing (From Unity)" required/>
+                        </div>
+                        <div class="form-group form-button">
+                            <input type="submit" name="save" id="save" class="form-submit" value="Save" />
+                        </div>
+                    </form>
                     <!-- DataTales Example -->
-                    <div class="card shadow mb-4">
-                        <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold text-primary">DataTables Example</h6>
-                            <a href="<?= base_url('Home/exportToExcel'); ?>" class="btn btn-primary"><i class="fa fa-download"></i> Download Excel</a>
-                            <a href="<?= base_url('Home/addUserTest'); ?>" class="btn btn-primary"><i class="fa fa-user-plus"></i> Add Data Test User</a>
-                        </div>
-                        <div class="card-body">
-                            <div class="table-responsive">
-                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                                    <thead>
-                                        <tr>
-                                            <th>No</th>
-                                            <th>Nama</th>
-                                            <th>nim</th>
-                                            <th>Total Test</th>
-                                            <th>Test Berhasil</th>
-                                            <th>Test Gagal</th>
-                                            <th>Nama Class</th>
-                                            <th>Tanggal Test</th>
-                                            <th>Score</th>
-                                            <th>Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <?php
-                                        $no = 1;
-                                        foreach ($tests as $test) : ?>
-                                            <tr>
-                                                <td><?= $no; ?></td>
-                                                <td><?= $test->nama ?></td>
-                                                <td><?= $test->nim ?></td>
-                                                <td><?= $test->total_test ?></td>
-                                                <td><?= $test->test_passed ?></td>
-                                                <td><?= $test->test_failed ?></td>
-                                                <td><?= $test->nama_class ?></td>
-                                                <td><?= $test->tanggal_test ?></td>
-                                                <td><?= round(($test->test_passed / $test->total_test) * 100, 2) ?>%</td>
-                                                <td><a href="<?= base_url("home/editTest/$test->id_test"); ?>" class="btn btn-warning">Edit</a> <a href="<?= base_url("home/deleteTest/$test->id_test") ?>" class="btn btn-danger" onclick="return confirm('Apakah Anda yakin ingin menghapus data ?')">Delete</a> </td>
-                                            </tr>
-                                        <?php $no++;
-                                        endforeach ?>
 
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
                 </div>
                 <!-- /.container-fluid -->
 
@@ -287,15 +267,6 @@
     <!-- Custom scripts for all pages-->
     <script src="/js/sb-admin-2.min.js"></script>
 
-    <!-- Page level plugins -->
-    <script src="/datatables/jquery.dataTables.min.js"></script>
-    <script src="/datatables/dataTables.bootstrap4.min.js"></script>
-
-    <script>
-        $(document).ready(function() {
-            $('#dataTable').DataTable();
-        });
-    </script>
 </body>
 
 </html>
