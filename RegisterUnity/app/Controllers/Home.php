@@ -175,6 +175,7 @@ class Home extends BaseController
         if ($this->session->get('level') == "admin") {
             helper(['form']);
             $data = [];
+            $data['nimusers'] = $this->users->getUsers();
             return view('Admin/add_test_user', $data);
         }
         return redirect()->to('login');

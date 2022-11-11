@@ -177,17 +177,23 @@
                         <div class="alert alert-danger"><?= $validation->listErrors() ?></div>
                     <?php endif; ?>
                     <form method="POST" action="<?= base_url('Home/saveUserTest/'); ?>" class="register-form" id="register-form">
-                        <div class="form-group">
+                        <!-- <div class="form-group">
                             <label for="name"><i class="zmdi zmdi-account material-icons-name"></i></label>
                             <input type="number" name="nim_users" id="nim_users" placeholder="Your NIM" required />
-                        </div>
+                        </div> -->
+                        <select class="form-control form-group" id="exampleFormControlSelect1" required name="nim_users" id="nim_users" >
+                            <option disabled selected value> -- select NIM -- </option>
+                            <?php foreach ($nimusers as $nims): ?>
+                                <option value="<?= $nims->nim ?>"><?= $nims->nim ?> --- <?= $nims->nama ?></option>
+                            <?php endforeach; ?>
+                        </select>
                         <div class="form-group">
                             <label for="total_test"><i class="zmdi zmdi-format-list-numbered"></i></label>
-                            <input type="number" name="total_test" id="total_test" placeholder="Total Test (From Unity)" required/>
+                            <input type="number" name="total_test" id="total_test" placeholder="Total Test (From Unity)" required />
                         </div>
                         <div class="form-group">
                             <label for="test_passed"><i class="zmdi zmdi-format-list-numbered"></i></label>
-                            <input type="number" name="test_passed" id="test_passed" placeholder="Test Passed (From Unity)" required/>
+                            <input type="number" name="test_passed" id="test_passed" placeholder="Test Passed (From Unity)" required />
                         </div>
                         <div class="form-group">
                             <label for="test_failed"><i class="zmdi zmdi-format-list-numbered"></i></label>
@@ -195,11 +201,11 @@
                         </div>
                         <div class="form-group">
                             <label for="nama_class"><i class="zmdi zmdi-present-to-all"></i></label>
-                            <input type="text" name="nama_class" id="nama_class" placeholder="Nama Class Testing (From Unity)" required/>
+                            <input type="text" name="nama_class" id="nama_class" placeholder="Nama Class Testing (From Unity)" required />
                         </div>
                         <div class="form-group">
                             <label for="tanggal_test"><i class="zmdi zmdi-calendar"></i></label>
-                            <input type="datetime-local" step="1" name="tanggal_test" id="tanggal_test" placeholder="Tanggal Testing (From Unity)" required/>
+                            <input type="datetime-local" step="1" name="tanggal_test" id="tanggal_test" placeholder="Tanggal Testing (From Unity)" required />
                         </div>
                         <div class="form-group form-button">
                             <input type="submit" name="save" id="save" class="form-submit" value="Save" />
