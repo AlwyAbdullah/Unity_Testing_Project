@@ -47,6 +47,11 @@ class Login extends BaseController
         }
     }
 
+    public function changePassword()
+    {
+        
+    }
+
     public function logout()
     {
         $session = session();
