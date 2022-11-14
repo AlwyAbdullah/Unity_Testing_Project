@@ -319,7 +319,7 @@ class Home extends BaseController
         // Redirect hasil generate xlsx ke web client
         header("Content-Type: application/vnd.ms-excel");
         header('Content-Disposition: attachment;filename=' . $fileName . '.xlsx');
-        header('Expires: 0');
+        // header('Expires: 0');
 
         header('Cache-Control: must-revalidate');
 
@@ -327,7 +327,7 @@ class Home extends BaseController
 
         header('Content-Length:' . filesize($fileName));
 
-        flush();
+        // flush();
 
         readfile($fileName);
 

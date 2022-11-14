@@ -23,7 +23,7 @@
 
     <!-- Custom styles for this template -->
     <link href="/css/sb-admin-2.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="/css/style.css">
+    <!-- <link rel="stylesheet" href="/css/style.css"> -->
 
     <!-- Custom styles for this page -->
     <link href="/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
@@ -170,7 +170,7 @@
                 <!-- End of Topbar -->
 
                 <div class="container-fluid">
-                    <h2 class="text-gray-800">Add Modul</h2>
+                    <h2 class="text-gray-800 font-weight-bold">Add Modul</h2>
                     <?php
                     if (session()->getFlashData('message')) {
                     ?>
@@ -194,17 +194,15 @@
                             <input type="file" accept="application/pdf" class="custom-file-input" id="materi" name="materi">
                             <label class="custom-file-label" for="customFile">Choose file</label>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group mt-3">
                             <button type="submit" class="btn btn-primary">Upload</button>
                         </div>
                     </form>
                 </div>
                 <div class="container-fluid mt-3">
-                    <div class="card">
-                        <div class="card-header">
-                            <h3>Data Testing</h3>
-                        </div>
-                        <div class="card-body">
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold">List Modul</h6>
                             <?php if (!empty(session()->getFlashdata('message'))) : ?>
                                 <div class="alert alert-success alert-dismissible fade show" role="alert">
                                     <?php echo session()->getFlashdata('message'); ?>
@@ -213,44 +211,54 @@
                                     </button>
                                 </div>
                             <?php endif; ?>
-                            <hr />
-                            <table class="table table-bordered">
-                                <tr>
-                                    <th>No</th>
-                                    <th>Nama</th>
-                                    <th>File</th>
-                                    <th>Test File</th>
-                                    <th>Tanggal modul dibuat</th>
-                                </tr>
-                                <?php
-                                $no = 1;
-                                foreach ($modul as $row) {
-                                    // $binary = $row->file;
-                                    // file_put_contents('my.pdf', $binary);
-                                    // header('Content-Type: application/pdf');
-                                    // header('Content-Disposition: attachment; filename=my.pdf');
-                                ?>
-                                    <tr>
-                                        <td><?= $no; ?></td>
-                                        <td><?= $row->judul_materi; ?></td>
-                                        <!-- Mengganti dengan form agar dapat download from database -->
-                                        <td><a href="<?= base_url("UnityHome/downloadModul/$row->id") ?>">Download Modul</a>
-                                            <?php if ($no == 1) { ?>
-                                                <a href="/uploads/Pretest_Test.cs" download="">Download Pretest Test</a>
-                                            <?php } ?>
-                                        </td>
-                                        <?php if ($no == 8) {
-                                            continue;
-                                        } else { ?>
-                                            <td><a href="/uploads/Modul<?= $no; ?>Test.cs" download="">Download Test File</a></td>
-                                        <?php } ?>
-                                        <td><?= $row->created_at; ?></td>
-                                        <?php $no++; ?>
-                                    </tr>
-                                <?php
-                                }
-                                ?>
-                            </table>
+                        </div>
+                        <div class="card-body">
+                            <!-- <hr /> -->
+                            <div class="table-responsive">
+                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                    <thead>
+                                        <tr>
+                                            <th>No</th>
+                                            <th>Nama</th>
+                                            <th>File</th>
+                                            <th>Test File</th>
+                                            <th>Tanggal modul dibuat</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php
+                                        $no = 1;
+                                        foreach ($modul as $row) {
+                                            // $binary = $row->file;
+                                            // file_put_contents('my.pdf', $binary);
+                                            // header('Content-Type: application/pdf');
+                                            // header('Content-Disposition: attachment; filename=my.pdf');
+                                        ?>
+                                            <tr>
+                                                <td><?= $no; ?></td>
+                                                <td><?= $row->judul_materi; ?></td>
+                                                <!-- Mengganti dengan form agar dapat download from database -->
+                                                <td><a href="<?= base_url("UnityHome/downloadModul/$row->id") ?>">Download Modul</a>
+                                                    <?php if ($no == 1) { ?>
+                                                        <a href="/uploads/Pretest_Test.cs" download="">Download Pretest Test</a>
+                                                    <?php } ?>
+                                                </td>
+                                                <?php if ($no == 8) {
+                                                    continue;
+                                                } else { ?>
+                                                    <td><a href="/uploads/Modul<?= $no; ?>Test.cs" download="">Download Test File</a></td>
+                                                <?php } ?>
+                                                <td><?= $row->created_at; ?></td>
+                                                <td><a href="<?= base_url("home/editTest/$row->id"); ?>" class="btn btn-warning">Edit</a> <a href="<?= base_url("home/deleteTest/$row->id") ?>" class="btn btn-danger" onclick="return confirm('Apakah Anda yakin ingin menghapus data ?')">Delete</a> </td>
+                                                <?php $no++; ?>
+                                            </tr>
+                                        <?php
+                                        }
+                                        ?>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -312,13 +320,20 @@
     <!-- Custom scripts for all pages-->
     <script src="/js/sb-admin-2.min.js"></script>
 
+    <!-- Page level plugins -->
+    <script src="/datatables/jquery.dataTables.min.js"></script>
+    <script src="/datatables/dataTables.bootstrap4.min.js"></script>
+
     <script>
+        $(document).ready(function() {
+            $('#dataTable').DataTable();
+        });
         $('.custom-file-input').on('change', function() {
             //get the file name
             var fileName = $(this).val();
             //replace the "Choose a file" label
             $(this).next('.custom-file-label').html(fileName);
-        })
+        });
     </script>
 
 </body>
