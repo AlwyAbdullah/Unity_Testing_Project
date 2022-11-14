@@ -29,6 +29,7 @@ class Login extends BaseController
                     'email'         => $data->email,
                     'level'         => $data->level,
                     'nim'           => $data->nim,
+                    'password'      => $data->password,
                     'logged_in'     => TRUE
                 ];
                 $session->set($ses_data);
@@ -45,11 +46,6 @@ class Login extends BaseController
             $session->setFlashdata('msg', 'Email not Found');
             return redirect()->to('/login');
         }
-    }
-
-    public function changePassword()
-    {
-        
     }
 
     public function logout()

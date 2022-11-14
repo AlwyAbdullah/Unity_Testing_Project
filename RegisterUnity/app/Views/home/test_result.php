@@ -158,6 +158,10 @@
                                     <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Profile
                                 </a>
+                                <a class="dropdown-item" href="<?= base_url('UnityHome/updatePassword'); ?>">
+                                    <i class="fa-solid fa-pen-to-square mr-2 text-gray-400"></i>
+                                    Change Password
+                                </a>
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
                                     <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>

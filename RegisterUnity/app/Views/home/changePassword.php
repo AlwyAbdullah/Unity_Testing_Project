@@ -174,48 +174,43 @@
 
                 </nav>
 
-                <div class="container">
+                <div class="container-fluid">
+
+                    <!-- Page Heading -->
+                    <h2 class="form-title text-gray-800">Change Password</h2>
+                    <?php if (isset($validation)) : ?>
+                        <div class="alert alert-danger"><?= $validation->listErrors() ?></div>
+                    <?php endif; ?>
                     <?php if (!empty(session()->getFlashdata('message'))) : ?>
-                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
                             <?php echo session()->getFlashdata('message'); ?>
                             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
                     <?php endif; ?>
-                    <h1>Start to Learn Unity Programming</h1>
-                    <hr>
-                    <p>Student can start learning with preparing a PC or Laptop to develop gaming application</p>
-                    <table class="table table-sm">
-                        <thead>
-                            <tr>
-                                <th scope="col" colspan="2">Requirement</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>1. A PC with minimum 4 GB RAM, 4GB HDD, 1280 x 800 screen resolution</td>
-                            </tr>
-                            <tr>
-                                <td>2. Unity installed</td>
-                            </tr>
-                            <tr>
-                                <td>3. A web Browser</td>
-                            </tr>
-                            <tr>
-                                <td>4. A PDF reader Software</td>
-                            </tr>
-                            <tr>
-                                <td>5. Internet Connection</td>
-                            </tr>
-                            <tr>
-                                <td><a href="uploads/Callback.cs" download="">6. Download This Callback Script for every modul</a></td>
-                            </tr>
-                            <tr>
-                                <td><a href="uploads/Set-up Unity Test Runner.pdf" download="">7. Download tutorial for preparing Unity Test Runner</a></td>
-                            </tr>
-                        </tbody>
-                    </table>
+                    <form method="POST" class="register-form" id="register-form" action="<?= base_url('UnityHome/saveUpdatePassword'); ?>">
+                        <h4>Input your old Password</h4>
+                        <div class="form-group">
+                            <!-- <label for="pass"><i class="zmdi zmdi-lock"></i></label> -->
+                            <input type="password" name="oldPass" id="oldPass" placeholder="Old Password" required class="form-control" />
+                        </div>
+                        <hr>
+                        <h4>Input your new Password</h4>
+                        <div class="form-group">
+                            <!-- <label for="pass"><i class="zmdi zmdi-lock"></i></label> -->
+                            <input type="password" name="newPass" id="newPass" placeholder="New Password" required class="form-control" />
+                        </div>
+                        <div class="form-group">
+                            <!-- <label for="re-pass"><i class="zmdi zmdi-lock-outline"></i></label> -->
+                            <input type="password" name="re_pass" id="re_pass" placeholder="Repeat your password" class="form-control" />
+                        </div>
+                        <div class="form-group form-button">
+                            <input type="submit" name="signup" id="signup" class="form-submit btn btn-primary" value="Save" />
+                        </div>
+                    </form>
+                    <!-- DataTales Example -->
+
                 </div>
             </div>
             <!-- End of Main Content -->
