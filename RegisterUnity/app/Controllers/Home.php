@@ -210,6 +210,7 @@ class Home extends BaseController
 
     public function update($id)
     {
+        $model = new UserModel();
         //include helper form
         helper(['form']);
         //set rules validation form
@@ -217,21 +218,24 @@ class Home extends BaseController
             'nama'          => 'required|min_length[3]|max_length[20]',
             'email'         => 'required|min_length[6]|max_length[50]|valid_email',
             'nim'           => 'required|min_length[10]|max_length[20]',
+            'password'      => 'required|min_length[8]|max_length[200]',
             'level'         => 'required'
         ];
 
         if ($this->validate($rules)) {
             $this->users->update($id, [
-                'nama'     => $this->request->getVar('nama'),
-                'email'    => $this->request->getVar('email'),
-                'nim'      => $this->request->getVar('nim'),
-                'level'    => $this->request->getVar('level'),
+                'nama'          => $this->request->getVar('nama'),
+                'email'         => $this->request->getVar('email'),
+                'nim'           => $this->request->getVar('nim'),
+                'password'      => password_hash($this->request->getVar('password'), PASSWORD_DEFAULT),
+                'level'         => $this->request->getVar('level'),
             ]);
             session()->setFlashdata('message', 'Edit Data User Berhasil');
             return redirect()->to('/Home');
         } else {
             $data['validation'] = $this->validator;
-            return redirect()->back();
+            $data['users'] = $model->where('id', $id)->first();
+            return view('Admin/edit', $data);
         }
     }
 

@@ -183,15 +183,19 @@
                         <?= csrf_field(); ?>
                         <div class="form-group">
                             <label for="name"><i class="zmdi zmdi-account material-icons-name"></i></label>
-                            <input type="text" name="nama" id="nama" placeholder="Your Name" required value="<?= $users->nama ?>" />
+                            <input type="text" name="nama" id="nama" placeholder="Update Name" required value="<?= $users->nama ?>" />
                         </div>
                         <div class="form-group">
                             <label for="email"><i class="zmdi zmdi-email"></i></label>
-                            <input type="email" name="email" id="email" placeholder="Your Email" required value="<?= $users->email ?>" />
+                            <input type="email" name="email" id="email" placeholder="Update Email" required value="<?= $users->email ?>" />
                         </div>
                         <div class="form-group">
                             <label for="nim"><i class="zmdi zmdi-format-list-numbered"></i></label>
-                            <input type="nim" name="nim" id="nim" placeholder="Your NIM" required value="<?= $users->nim ?>" ? />
+                            <input type="number" name="nim" id="nim" placeholder="Update NIM" required value="<?= $users->nim ?>" />
+                        </div>
+                        <div class="form-group">
+                            <label for="password"><i class="zmdi zmdi-lock-outline"></i></label>
+                            <input type="text" name="password" id="password" placeholder="Update Password" required  />
                         </div>
                         <div class="form-group">
                             <p>Level</p>
