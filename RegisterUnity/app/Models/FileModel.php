@@ -10,7 +10,7 @@ class FileModel extends Model {
     protected $returnType = "object";
     protected $useAutoIncrement = true;
     protected $useTimestamps = true;
-    protected $allowedFields = ['judul_materi', 'nama_file'];
+    protected $allowedFields = ['judul_materi', 'nama_file', 'test_file'];
 }
 
 /* End of file ModelName.php */

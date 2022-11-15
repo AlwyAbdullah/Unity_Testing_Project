@@ -77,13 +77,6 @@ class UnityHome extends BaseController
         }
     }
 
-    public function downloadModul($id)
-    {
-        $data = $this->fileModel->find($id);
-
-        return $this->response->download("uploads/$data->nama_file", null);
-    }
-
     public function testData()
     {
         if ($this->session->get('level') == "user") {

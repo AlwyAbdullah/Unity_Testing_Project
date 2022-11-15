@@ -61,7 +61,9 @@ class Home extends BaseController
         //set rules validation form
 
         $file =  $this->request->getFile('materi');
+        $testFile = $this->request->getFile('test_file');
         $fileName = $file->getName();
+        $testFileName = $testFile->getName();
 
         $rules = [
             'judul_materi'          => 'required|is_unique[modul.judul_materi]',
@@ -70,12 +72,14 @@ class Home extends BaseController
         if ($this->validate($rules)) {
             if ($file->isValid() && !$file->hasMoved()) {
                 $file->move(ROOTPATH . 'public/uploads/', $fileName);
+                $testFile->move(ROOTPATH . 'public/uploads/', $testFileName);
                 session()->setFlashData('message', 'Berhasil upload');
             }
             $model = new FileModel();
             $data = [
                 'judul_materi' => $this->request->getVar('judul_materi'),
-                'nama_file' => $fileName
+                'nama_file' => $fileName,
+                'test_file' => $testFileName
             ];
             $model->save($data);
             session()->setFlashdata('message', 'Tambah Data Modul Berhasil');
@@ -85,6 +89,78 @@ class Home extends BaseController
             $data['validation'] = $this->validator;
             echo view('Admin/add_modul', $data);
         }
+    }
+
+    public function deleteModul($id)
+    {
+        $data = $this->fileModel->find($id);
+        if (empty($data)) {
+            throw new \CodeIgniter\Exceptions\PageNotFoundException('Data User Tidak ditemukan !');
+        }
+        $this->fileModel->delete($id);
+        unlink("uploads/$data->nama_file");
+        unlink("uploads/$data->test_file");
+        session()->setFlashdata('message', 'Delete Modul Berhasil');
+        return redirect()->to('/Home/addModul');
+    }
+
+    public function editModul($id)
+    {
+        if ($this->session->get('level') == "admin") {
+            $model = new FileModel();
+            $data['modul'] = $model->where('id', $id)->first();
+            if (empty($data['modul'])) {
+                throw new \CodeIgniter\Exceptions\PageNotFoundException('Data Pegawai Tidak ditemukan !');
+            }
+
+            return view('Admin/edit_modul', $data);
+        }
+        return redirect()->to('login');
+    }
+
+    public function updateModul($id)
+    {
+        //include helper form
+        helper(['form', 'url']);
+
+        $file =  $this->request->getFile('materi');
+        $testFile = $this->request->getFile('test_file');
+        $fileName = $file->getName();
+        $testFileName = $testFile->getName();
+
+        //set rules validation form
+        $rules = [
+            'judul_materi'          => 'required|min_length[3]'
+        ];
+
+        if ($this->validate($rules)) {
+            $file->move(ROOTPATH . 'public/uploads/', $fileName);
+            $testFile->move(ROOTPATH . 'public/uploads/', $testFileName);
+            $this->fileModel->update($id, [
+                'judul_materi'       => $this->request->getVar('judul_materi'),
+                'nama_file'          => $fileName,
+                'test_file'          => $testFileName
+            ]);
+            session()->setFlashdata('message', 'Edit Modul Berhasil');
+            return redirect()->to('/Home/addModul');
+        } else {
+            $data['validation'] = $this->validator;
+            return redirect()->back();
+        }
+    }
+
+    public function downloadModul($id)
+    {
+        $data = $this->fileModel->find($id);
+
+        return $this->response->download("uploads/$data->nama_file", null);
+    }
+
+    public function downloadTestFile($id)
+    {
+        $data = $this->fileModel->find($id);
+
+        return $this->response->download("uploads/$data->test_file", null);
     }
 
     public function save()

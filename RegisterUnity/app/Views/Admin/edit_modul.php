@@ -23,7 +23,7 @@
 
     <!-- Custom styles for this template -->
     <link href="/css/sb-admin-2.min.css" rel="stylesheet">
-    <!-- <link rel="stylesheet" href="/css/style.css"> -->
+    <link rel="stylesheet" href="/css/style.css">
 
     <!-- Custom styles for this page -->
     <link href="/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
@@ -49,7 +49,7 @@
             <hr class="sidebar-divider my-0">
 
             <!-- Nav Item - Dashboard -->
-            <li class="nav-item">
+            <li class="nav-item active">
                 <a class="nav-link" href="<?= base_url('Home') ?>">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Dashboard</span></a>
@@ -140,8 +140,10 @@
                         </button>
                     </form>
 
+
                     <!-- Topbar Navbar -->
                     <ul class="navbar-nav ml-auto">
+
                         <div class="topbar-divider d-none d-sm-block"></div>
 
                         <!-- Nav Item - User Information -->
@@ -169,91 +171,35 @@
                 </nav>
                 <!-- End of Topbar -->
 
+                <!-- Begin Page Content -->
                 <div class="container-fluid">
-                    <h2 class="text-gray-800 font-weight-bold">Add Modul</h2>
-                    <?php
-                    if (session()->getFlashData('message')) {
-                    ?>
-                        <div class="alert alert-success alert-dismissible fade show" role="alert">
-                            <?= session()->getFlashData('message') ?>
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                    <?php
-                    }
-                    ?>
+
+                    <!-- Page Heading -->
+                    <h2 class="form-title text-gray-800">Edit Modul</h2>
                     <?php if (isset($validation)) : ?>
                         <div class="alert alert-danger"><?= $validation->listErrors() ?></div>
                     <?php endif; ?>
-                    <form method="post" action="<?= base_url('home/saveModul') ?>" enctype="multipart/form-data">
+                    <form method="POST" action="<?= base_url('Home/updateModul/' . $modul->id); ?>" enctype="multipart/form-data">
+                        <?= csrf_field(); ?>
                         <div class="form-group">
-                            <input type="text" class="form-control" id="judul_materi" placeholder="Enter Modul Title" name="judul_materi">
+                            <input type="text" class="form-control" id="judul_materi" placeholder="Enter Modul Title" name="judul_materi" value="<?= $modul->judul_materi ?>">
                         </div>
                         <div class="custom-file">
                             <input type="file" accept="application/pdf" class="custom-file-input" id="materi" name="materi">
-                            <label class="custom-file-label" for="customFile">Choose file</label>
+                            <label class="custom-file-label" for="customFile"><?= $modul->nama_file ?></label>
                         </div>
                         <div class="custom-file mt-3">
                             <input type="file" accept=".cs" class="custom-file-input" id="test_file" name="test_file">
-                            <label class="custom-file-label" for="customFile">Choose file</label>
+                            <label class="custom-file-label" for="customFile"><?= $modul->test_file ?></label>
                         </div>
                         <div class="form-group mt-3">
-                            <button type="submit" class="btn btn-primary">Upload</button>
+                            <button type="submit" class="btn btn-primary">Update</button>
                         </div>
                     </form>
+                    <!-- DataTales Example -->
+
                 </div>
-                <div class="container-fluid mt-3">
-                    <div class="card shadow mb-4">
-                        <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold">List Modul</h6>
-                        </div>
-                        <div class="card-body">
-                            <!-- <hr /> -->
-                            <div class="table-responsive">
-                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                                    <thead>
-                                        <tr>
-                                            <th>No</th>
-                                            <th>Nama</th>
-                                            <th>File</th>
-                                            <th>Test File</th>
-                                            <th>Tanggal modul dibuat</th>
-                                            <th>Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <?php
-                                        $no = 1;
-                                        foreach ($modul as $row) {
-                                            // $binary = $row->file;
-                                            // file_put_contents('my.pdf', $binary);
-                                            // header('Content-Type: application/pdf');
-                                            // header('Content-Disposition: attachment; filename=my.pdf');
-                                        ?>
-                                            <tr>
-                                                <td><?= $no; ?></td>
-                                                <td><?= $row->judul_materi; ?></td>
-                                                <!-- Mengganti dengan form agar dapat download from database -->
-                                                <td><a href="<?= base_url("Home/downloadModul/$row->id") ?>">Download Modul</a>
-                                                    <?php if ($no == 1) { ?>
-                                                        <a href="/uploads/Pretest_Test.cs" download="">Download Pretest Test</a>
-                                                    <?php } ?>
-                                                </td>
-                                                <td><a href="<?= base_url("Home/downloadTestFile/$row->id") ?>">Download Test File</a></td>
-                                                <td><?= $row->created_at; ?></td>
-                                                <td><a href="<?= base_url("Home/editModul/$row->id"); ?>" class="btn btn-warning">Edit</a> <a href="<?= base_url("Home/deleteModul/$row->id") ?>" class="btn btn-danger" onclick="return confirm('Apakah Anda yakin ingin menghapus data ?')">Delete</a> </td>
-                                                <?php $no++; ?>
-                                            </tr>
-                                        <?php
-                                        }
-                                        ?>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <!-- /.container-fluid -->
 
             </div>
             <!-- End of Main Content -->
@@ -292,7 +238,7 @@
                 <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                    <a class="btn btn-primary" href="<?= base_url('login/logout') ?>">Logout</a>
+                    <a class="btn btn-primary" href="<?= base_url("login/logout") ?>">Logout</a>
                 </div>
             </div>
         </div>
@@ -312,14 +258,7 @@
     <!-- Custom scripts for all pages-->
     <script src="/js/sb-admin-2.min.js"></script>
 
-    <!-- Page level plugins -->
-    <script src="/datatables/jquery.dataTables.min.js"></script>
-    <script src="/datatables/dataTables.bootstrap4.min.js"></script>
-
     <script>
-        $(document).ready(function() {
-            $('#dataTable').DataTable();
-        });
         $('.custom-file-input').on('change', function() {
             //get the file name
             var fileName = $(this).val();
