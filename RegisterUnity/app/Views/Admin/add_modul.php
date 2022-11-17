@@ -74,6 +74,7 @@
                         <h6 class="collapse-header">Tambah Data:</h6>
                         <a class="collapse-item" href="<?= base_url('Home/addUser'); ?> ">User</a>
                         <a class="collapse-item" href="<?= base_url('Home/addModul'); ?>">Modul</a>
+                        <a class="collapse-item" href="<?= base_url('Home/addKategori'); ?>">Kategori</a>
                     </div>
                 </div>
             </li>
@@ -192,12 +193,18 @@
                         </div>
                         <div class="custom-file">
                             <input type="file" accept="application/pdf" class="custom-file-input" id="materi" name="materi">
-                            <label class="custom-file-label" for="customFile">Choose file</label>
+                            <label class="custom-file-label" for="customFile">Choose PDF File</label>
                         </div>
                         <div class="custom-file mt-3">
                             <input type="file" accept=".cs" class="custom-file-input" id="test_file" name="test_file">
-                            <label class="custom-file-label" for="customFile">Choose file</label>
+                            <label class="custom-file-label" for="customFile">Choose Test File</label>
                         </div>
+                        <select class="form-control form-group mt-3" id="exampleFormControlSelect1" required name="kategori_id" id="kategori_id">
+                            <option disabled selected value> -- Pilih Kategori Pembelajaran -- </option>
+                            <?php foreach ($kategori as $kt) : ?>
+                                <option value="<?= $kt->id_kategori ?>"><?= $kt->nama_kategori ?></option>
+                            <?php endforeach; ?>
+                        </select>
                         <div class="form-group mt-3">
                             <button type="submit" class="btn btn-primary">Upload</button>
                         </div>

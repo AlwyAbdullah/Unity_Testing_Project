@@ -10,7 +10,7 @@ class UserModel extends Model {
     protected $returnType = "object";
     protected $useAutoIncrement = true;
     protected $useTimestamps = true;
-    protected $allowedFields = ['nama', 'email', 'nim', 'password', 'user', 'level', 'created_at'];
+    protected $allowedFields = ['nama', 'email', 'nim', 'password', 'kategori_id', 'level', 'created_at'];
 
     public function getAllTestResults($nim)
     {
@@ -34,6 +34,7 @@ class UserModel extends Model {
     public function getUsers()
     {
         $query = $this->db->table('users')
+        ->join('kategori', 'users.kategori_id = kategori.id_kategori')
         ->where('users.level', 'user')
         ->get()
         ->getResult();

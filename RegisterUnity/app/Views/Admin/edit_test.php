@@ -74,6 +74,7 @@
                         <h6 class="collapse-header">Tambah Data:</h6>
                         <a class="collapse-item" href="<?= base_url('Home/addUser'); ?> ">User</a>
                         <a class="collapse-item" href="<?= base_url('Home/addModul'); ?>">Modul</a>
+                        <a class="collapse-item" href="<?= base_url('Home/addKategori'); ?>">Kategori</a>
                     </div>
                 </div>
             </li>

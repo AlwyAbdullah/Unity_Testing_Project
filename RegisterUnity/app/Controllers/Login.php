@@ -30,6 +30,7 @@ class Login extends BaseController
                     'level'         => $data->level,
                     'nim'           => $data->nim,
                     'password'      => $data->password,
+                    'kategori_id'   => $data->kategori_id,
                     'logged_in'     => TRUE
                 ];
                 $session->set($ses_data);

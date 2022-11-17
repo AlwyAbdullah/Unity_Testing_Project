@@ -74,6 +74,7 @@
                         <h6 class="collapse-header">Tambah Data:</h6>
                         <a class="collapse-item" href="<?= base_url('Home/addUser'); ?> ">User</a>
                         <a class="collapse-item" href="<?= base_url('Home/addModul'); ?>">Modul</a>
+                        <a class="collapse-item" href="<?= base_url('Home/addKategori'); ?>">Kategori</a>
                     </div>
                 </div>
             </li>
@@ -195,7 +196,7 @@
                         </div>
                         <div class="form-group">
                             <label for="password"><i class="zmdi zmdi-lock-outline"></i></label>
-                            <input type="text" name="password" id="password" placeholder="Update Password" required  />
+                            <input type="text" name="password" id="password" placeholder="Update Password" required />
                         </div>
                         <div class="form-group">
                             <p>Level</p>
@@ -205,6 +206,12 @@
                                 <option value="admin" <?= ($users->level == "admin" ? "selected" : "") ?>>Admin</option>
                             </select>
                         </div>
+                        <p>Kategori</p>
+                        <select class="form-control form-group" id="exampleFormControlSelect1" required name="kategori_id" id="kategori_id">
+                            <?php foreach ($kategori as $kt) : ?>
+                                <option value="<?= $kt->id_kategori ?>" <?php if ($kt->id_kategori == $users->kategori_id) echo 'selected' ?>><?= $kt->nama_kategori ?></option>
+                            <?php endforeach; ?>
+                        </select>
                         <div class="form-group form-button">
                             <input type="submit" name="signup" id="signup" class="form-submit" value="Save" />
                         </div>

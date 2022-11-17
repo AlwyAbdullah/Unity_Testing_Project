@@ -73,6 +73,7 @@
                         <h6 class="collapse-header">Tambah Data:</h6>
                         <a class="collapse-item" href="<?= base_url('Home/addUser'); ?> ">User</a>
                         <a class="collapse-item" href="<?= base_url('Home/addModul'); ?>">Modul</a>
+                        <a class="collapse-item" href="<?= base_url('Home/addKategori'); ?>">Kategori</a>
                     </div>
                 </div>
             </li>
@@ -178,23 +179,23 @@
                     <form method="POST" class="register-form" id="register-form" action="<?= base_url('Home/save'); ?>">
                         <div class="form-group">
                             <!-- <label for="name"><i class="zmdi zmdi-account material-icons-name"></i></label> -->
-                            <input type="text" name="nama" id="nama" placeholder="Your Name" required class="form-control"/>
+                            <input type="text" name="nama" id="nama" placeholder="Your Name" required class="form-control" />
                         </div>
                         <div class="form-group">
                             <!-- <label for="email"><i class="zmdi zmdi-email"></i></label> -->
-                            <input type="email" name="email" id="email" placeholder="Your Email" required class="form-control"/>
+                            <input type="email" name="email" id="email" placeholder="Your Email" required class="form-control" />
                         </div>
                         <div class="form-group">
                             <!-- <label for="nim"><i class="zmdi zmdi-format-list-numbered"></i></label> -->
-                            <input type="nim" name="nim" id="nim" placeholder="Your NIM" required class="form-control"/>
+                            <input type="nim" name="nim" id="nim" placeholder="Your NIM" required class="form-control" />
                         </div>
                         <div class="form-group">
                             <!-- <label for="pass"><i class="zmdi zmdi-lock"></i></label> -->
-                            <input type="password" name="password" id="password" placeholder="Password" required class="form-control"/>
+                            <input type="password" name="password" id="password" placeholder="Password" required class="form-control" />
                         </div>
                         <div class="form-group">
                             <!-- <label for="re-pass"><i class="zmdi zmdi-lock-outline"></i></label> -->
-                            <input type="password" name="re_pass" id="re_pass" placeholder="Repeat your password" class="form-control"/>
+                            <input type="password" name="re_pass" id="re_pass" placeholder="Repeat your password" class="form-control" />
                         </div>
                         <div class="form-group">
                             <p>Level</p>
@@ -204,6 +205,13 @@
                                 <option value="admin">Admin</option>
                             </select>
                         </div>
+                        <p>Kategori</p>
+                        <select class="form-control form-group" id="exampleFormControlSelect1" required name="kategori_id" id="kategori_id">
+                            <option disabled selected value> -- select Kategori -- </option>
+                            <?php foreach ($kategori as $kt) : ?>
+                                <option value="<?= $kt->id_kategori ?>"><?= $kt->nama_kategori ?></option>
+                            <?php endforeach; ?>
+                        </select>
                         <div class="form-group form-button">
                             <input type="submit" name="signup" id="signup" class="form-submit btn btn-primary" value="Save" />
                         </div>

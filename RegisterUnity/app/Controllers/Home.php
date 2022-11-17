@@ -5,6 +5,7 @@ namespace App\Controllers;
 use App\Models\FileModel;
 use App\Models\UserModel;
 use App\Models\TestResultModel;
+use App\Models\KategoriModel;
 // use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
 // use PhpOffice\PhpSpreadsheet\Spreadsheet;
 // use PhpOffice\PhpSpreadsheet\Writer\Xlsx as WriterXlsx;
@@ -20,6 +21,7 @@ class Home extends BaseController
         $this->users = new UserModel();
         $this->fileModel = new FileModel();
         $this->testModel = new TestResultModel();
+        $this->kategoriModel = new KategoriModel();
     }
 
     public function index()
@@ -39,9 +41,92 @@ class Home extends BaseController
         if ($this->session->get('level') == "admin") {
             helper(['form']);
             $data = [];
+            $data['kategori'] = $this->kategoriModel->findAll();
             return view('Admin/add_user', $data);
         }
         return redirect()->to('login');
+    }
+
+    public function addKategori()
+    {
+        if ($this->session->get('level') == "admin") {
+            helper(['form']);
+            $data = [];
+            $data['kategori'] = $this->kategoriModel->findAll();
+            return view('Admin/add_kategori', $data);
+        }
+        return redirect()->to('login');
+    }
+
+    public function deleteKategori($id)
+    {
+        $data = $this->kategoriModel->find($id);
+        if (empty($data)) {
+            throw new \CodeIgniter\Exceptions\PageNotFoundException('Data User Tidak ditemukan !');
+        }
+        $this->kategoriModel->delete($id);
+        session()->setFlashdata('message', 'Delete Kategori Berhasil');
+        return redirect()->to('/Home/addKategori');
+    }
+
+    public function saveKategori()
+    {
+        //include helper form
+        helper(['form']);
+        //set rules validation form
+        $rules = [
+            'nama_kategori'          => 'required|min_length[3]|max_length[100]|is_unique[kategori.nama_kategori]',
+        ];
+
+        if ($this->validate($rules)) {
+            $model = new KategoriModel();
+            $data = [
+                'nama_kategori'     => $this->request->getVar('nama_kategori'),
+            ];
+            $model->save($data);
+            session()->setFlashdata('message', 'Tambah Data Kategori Berhasil');
+            return redirect()->to('/Home/addKategori');
+        } else {
+            $data['validation'] = $this->validator;
+            echo view('Admin/add_kategori', $data);
+        }
+    }
+
+    public function editKategori($id)
+    {
+        if ($this->session->get('level') == "admin") {
+            $model = new KategoriModel();
+            $data['kategori'] = $model->where('id_kategori', $id)->first();
+            if (empty($data['kategori'])) {
+                throw new \CodeIgniter\Exceptions\PageNotFoundException('Data Pegawai Tidak ditemukan !');
+            }
+
+            return view('Admin/edit_kategori', $data);
+        }
+        return redirect()->to('login');
+    }
+
+    public function updateKategori($id)
+    {
+        $model = new KategoriModel();
+        //include helper form
+        helper(['form']);
+        //set rules validation form
+        $rules = [
+            'nama_kategori'          => 'required|min_length[3]'
+        ];
+
+        if ($this->validate($rules)) {
+            $this->kategoriModel->update($id, [
+                'nama_kategori'          => $this->request->getVar('nama_kategori')
+            ]);
+            session()->setFlashdata('message', 'Edit Data User Berhasil');
+            return redirect()->to('/Home/addKategori');
+        } else {
+            $data['validation'] = $this->validator;
+            $data['kategori'] = $model->where('id_kategori', $id)->first();
+            return view('Admin/editKategori', $data);
+        }
     }
 
     public function addModul()
@@ -49,6 +134,7 @@ class Home extends BaseController
         if ($this->session->get('level') == "admin") {
             helper(['form']);
             $data = ["modul" => $this->fileModel->findAll(), ''];
+            $data['kategori'] = $this->kategoriModel->findAll();
             return view('Admin/add_modul', $data);
         }
         return redirect()->to('login');
@@ -79,7 +165,8 @@ class Home extends BaseController
             $data = [
                 'judul_materi' => $this->request->getVar('judul_materi'),
                 'nama_file' => $fileName,
-                'test_file' => $testFileName
+                'test_file' => $testFileName,
+                'kategori_id' => $this->request->getVar('kategori_id')
             ];
             $model->save($data);
             session()->setFlashdata('message', 'Tambah Data Modul Berhasil');
@@ -109,6 +196,7 @@ class Home extends BaseController
         if ($this->session->get('level') == "admin") {
             $model = new FileModel();
             $data['modul'] = $model->where('id', $id)->first();
+            $data['kategori'] = $this->kategoriModel->findAll();
             if (empty($data['modul'])) {
                 throw new \CodeIgniter\Exceptions\PageNotFoundException('Data Pegawai Tidak ditemukan !');
             }
@@ -139,7 +227,8 @@ class Home extends BaseController
             $this->fileModel->update($id, [
                 'judul_materi'       => $this->request->getVar('judul_materi'),
                 'nama_file'          => $fileName,
-                'test_file'          => $testFileName
+                'test_file'          => $testFileName,
+                'kategori_id'        => $this->request->getVar('kategori_id')
             ]);
             session()->setFlashdata('message', 'Edit Modul Berhasil');
             return redirect()->to('/Home/addModul');
@@ -179,11 +268,12 @@ class Home extends BaseController
         if ($this->validate($rules)) {
             $model = new UserModel();
             $data = [
-                'nama'     => $this->request->getVar('nama'),
-                'email'    => $this->request->getVar('email'),
-                'nim'      => $this->request->getVar('nim'),
-                'password' => password_hash($this->request->getVar('password'), PASSWORD_DEFAULT),
-                'level'    => $this->request->getVar('level'),
+                'nama'          => $this->request->getVar('nama'),
+                'email'         => $this->request->getVar('email'),
+                'nim'           => $this->request->getVar('nim'),
+                'password'      => password_hash($this->request->getVar('password'), PASSWORD_DEFAULT),
+                'level'         => $this->request->getVar('level'),
+                'kategori_id'   => $this->request->getVar('kategori_id')
             ];
             $model->save($data);
             session()->setFlashdata('message', 'Tambah Data User Berhasil');
@@ -199,6 +289,7 @@ class Home extends BaseController
         if ($this->session->get('level') == "admin") {
             $model = new UserModel();
             $data['users'] = $model->where('id', $id)->first();
+            $data['kategori'] = $this->kategoriModel->findAll();
             if (empty($data['users'])) {
                 throw new \CodeIgniter\Exceptions\PageNotFoundException('Data Pegawai Tidak ditemukan !');
             }
@@ -229,6 +320,7 @@ class Home extends BaseController
                 'nim'           => $this->request->getVar('nim'),
                 'password'      => password_hash($this->request->getVar('password'), PASSWORD_DEFAULT),
                 'level'         => $this->request->getVar('level'),
+                'kategori_id'   => $this->request->getVar('kategori_id')
             ]);
             session()->setFlashdata('message', 'Edit Data User Berhasil');
             return redirect()->to('/Home');

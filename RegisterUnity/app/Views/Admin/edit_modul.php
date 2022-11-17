@@ -74,6 +74,7 @@
                         <h6 class="collapse-header">Tambah Data:</h6>
                         <a class="collapse-item" href="<?= base_url('Home/addUser'); ?> ">User</a>
                         <a class="collapse-item" href="<?= base_url('Home/addModul'); ?>">Modul</a>
+                        <a class="collapse-item" href="<?= base_url('Home/addKategori'); ?>">Kategori</a>
                     </div>
                 </div>
             </li>
@@ -192,6 +193,11 @@
                             <input type="file" accept=".cs" class="custom-file-input" id="test_file" name="test_file">
                             <label class="custom-file-label" for="customFile"><?= $modul->test_file ?></label>
                         </div>
+                        <select class="form-control form-group" id="exampleFormControlSelect1" required name="kategori_id" id="kategori_id">
+                            <?php foreach ($kategori as $kt) : ?>
+                                <option value="<?= $kt->id_kategori ?>" <?php if($kt->id_kategori == $modul->kategori_id) echo 'selected' ?>><?= $kt->nama_kategori ?></option>
+                            <?php endforeach; ?>
+                        </select>
                         <div class="form-group mt-3">
                             <button type="submit" class="btn btn-primary">Update</button>
                         </div>
