@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Models\UserModel;
 use App\Models\FileModel;
+use App\Models\KategoriModel;
 
 class UnityHome extends BaseController
 {
@@ -13,6 +14,7 @@ class UnityHome extends BaseController
     {
         $this->unityHome = new UserModel();
         $this->fileModel = new FileModel();
+        $this->kategoriModel = new KategoriModel();
         $this->session = session();
     }
 
@@ -72,7 +74,7 @@ class UnityHome extends BaseController
     public function modul()
     {
         if ($this->session->get('level') == "user") {
-            $data['modul'] = $this->fileModel->findAll();
+            $data['modul'] = $this->fileModel->getAllModul();
             return view('home/modul', $data);
         }
     }

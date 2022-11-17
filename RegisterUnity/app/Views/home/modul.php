@@ -197,36 +197,33 @@
                                     <th>Nama</th>
                                     <th>File</th>
                                     <th>Test File</th>
+                                    <th>Kategori</th>
                                     <th>Tanggal modul dibuat</th>
                                 </tr>
                                 <?php
                                 $no = 1;
                                 foreach ($modul as $row) {
-                                    // $binary = $row->file;
-                                    // file_put_contents('my.pdf', $binary);
-                                    // header('Content-Type: application/pdf');
-                                    // header('Content-Disposition: attachment; filename=my.pdf');
-                                ?>
-                                    <tr>
-                                        <td><?= $no; ?></td>
-                                        <td><?= $row->judul_materi; ?></td>
-                                        <!-- Mengganti dengan form agar dapat download from database -->
-                                        <td><a href="<?= base_url("UnityHome/downloadModul/$row->id") ?>">Download Modul</a>
-                                            <?php if ($no == 1) { ?>
-                                                <a href="/uploads/Pretest_Test.cs" download="">Download Pretest Test</a>
+                                    if ($row->kategori_id == session()->get("kategori_id")) { ?>
+                                        <tr>
+                                            <td><?= $no; ?></td>
+                                            <td><?= $row->judul_materi; ?></td>
+                                            <!-- Mengganti dengan form agar dapat download from database -->
+                                            <td><a href="<?= base_url("UnityHome/downloadModul/$row->id") ?>">Download Modul</a>
+                                                <?php if ($no == 1) { ?>
+                                                    <a href="/uploads/Pretest_Test.cs" download="">Download Pretest Test</a>
+                                                <?php } ?>
+                                            </td>
+                                            <?php if ($no == 8) {
+                                                continue;
+                                            } else { ?>
+                                                <td><a href="/uploads/Modul<?= $no; ?>Test.cs" download="">Download Test File</a></td>
                                             <?php } ?>
-                                        </td>
-                                        <?php if ($no == 8) {
-                                            continue;
-                                        } else { ?>
-                                            <td><a href="/uploads/Modul<?= $no; ?>Test.cs" download="">Download Test File</a></td>
-                                        <?php } ?>
-                                        <td><?= $row->created_at; ?></td>
-                                        <?php $no++; ?>
-                                    </tr>
-                                <?php
-                                }
-                                ?>
+                                            <td><?= $row->nama_kategori; ?></td>
+                                            <td><?= $row->created_at; ?></td>
+                                            <?php $no++; ?>
+                                        </tr>
+                                <?php } ?>
+                            <?php } ?>
                             </table>
                         </div>
                     </div>
