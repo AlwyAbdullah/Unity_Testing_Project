@@ -133,7 +133,7 @@ class Home extends BaseController
     {
         if ($this->session->get('level') == "admin") {
             helper(['form']);
-            $data = ["modul" => $this->fileModel->findAll(), ''];
+            $data = ["modul" => $this->fileModel->getAllModul(), ''];
             $data['kategori'] = $this->kategoriModel->findAll();
             return view('Admin/add_modul', $data);
         }
@@ -222,14 +222,31 @@ class Home extends BaseController
         ];
 
         if ($this->validate($rules)) {
-            $file->move(ROOTPATH . 'public/uploads/', $fileName);
-            $testFile->move(ROOTPATH . 'public/uploads/', $testFileName);
-            $this->fileModel->update($id, [
-                'judul_materi'       => $this->request->getVar('judul_materi'),
-                'nama_file'          => $fileName,
-                'test_file'          => $testFileName,
-                'kategori_id'        => $this->request->getVar('kategori_id')
-            ]);
+            if ($file != "" && $testFile != "") {
+                $file->move(ROOTPATH . 'public/uploads/', $fileName);
+                $testFile->move(ROOTPATH . 'public/uploads/', $testFileName);
+                $this->fileModel->update($id, [
+                    'judul_materi'       => $this->request->getVar('judul_materi'),
+                    'nama_file'          => $fileName,
+                    'test_file'          => $testFileName,
+                    'kategori_id'        => $this->request->getVar('kategori_id')
+                ]);
+            } else if ($file == "" && $testFile != "") {
+                $testFile->move(ROOTPATH . 'public/uploads/', $testFileName);
+                $this->fileModel->update($id, [
+                    'judul_materi'       => $this->request->getVar('judul_materi'),
+                    'test_file'          => $testFileName,
+                    'kategori_id'        => $this->request->getVar('kategori_id')
+                ]);
+            } else if ($file != "" && $testFile == "") {
+                $file->move(ROOTPATH . 'public/uploads/', $fileName);
+                $this->fileModel->update($id, [
+                    'judul_materi'       => $this->request->getVar('judul_materi'),
+                    'nama_file'          => $fileName,
+                    'kategori_id'        => $this->request->getVar('kategori_id')
+                ]);
+            }
+
             session()->setFlashdata('message', 'Edit Modul Berhasil');
             return redirect()->to('/Home/addModul');
         } else {
@@ -450,61 +467,6 @@ class Home extends BaseController
             return view('Admin/test_data', $data);
         }
         return redirect()->to('login');
-    }
-
-    public function exportToExcel()
-    {
-        $excel = $this->users->getAllTest();
-        $data['tests'] = $this->users->getAllTest();
-        $spreadsheet = new Spreadsheet();
-
-        $sheet = $spreadsheet->getActiveSheet();
-        $sheet->setCellValue('A1', 'No');
-        $sheet->setCellValue('B1', 'Nama');
-        $sheet->setCellValue('C1', 'Nim');
-        $sheet->setCellValue('D1', 'Total Test');
-        $sheet->setCellValue('E1', 'Test Passed');
-        $sheet->setCellValue('F1', 'Test Failed');
-        $sheet->setCellValue('G1', 'Nama Class');
-        $sheet->setCellValue('H1', 'Tanggal Test');
-        $sheet->setCellValue('I1', 'Score Test');
-        $rows = 2;
-        $no = 1;
-        foreach ($excel as $val) {
-            $sheet->setCellValue('A' . $rows, $no);
-            $sheet->setCellValue('B' . $rows, $val->nama);
-            $sheet->setCellValue('C' . $rows, $val->nim);
-            $sheet->setCellValue('D' . $rows, $val->total_test);
-            $sheet->setCellValue('E' . $rows, $val->test_passed);
-            $sheet->setCellValue('F' . $rows, $val->test_failed);
-            $sheet->setCellValue('G' . $rows, $val->nama_class);
-            $sheet->setCellValue('H' . $rows, $val->tanggal_test);
-            $sheet->setCellValue('I' . $rows, round(($val->test_passed / $val->total_test) * 100, 2) . '%');
-            $rows++;
-            $no++;
-        }
-
-        // tulis dalam format .xlsx
-        $writer = new Xlsx($spreadsheet);
-        $fileName = 'DataTesting';
-
-        // Redirect hasil generate xlsx ke web client
-        header("Content-Type: application/vnd.ms-excel");
-        header('Content-Disposition: attachment;filename=' . $fileName . '.xlsx');
-        // header('Expires: 0');
-
-        header('Cache-Control: must-revalidate');
-
-        header('Pragma: public');
-
-        header('Content-Length:' . filesize($fileName));
-
-        // flush();
-
-        readfile($fileName);
-
-        $writer->save('php://output');
-        return view('Admin/test_data', $data);
     }
 
     public function profile()

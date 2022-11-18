@@ -225,6 +225,7 @@
                                             <th>Nama</th>
                                             <th>File</th>
                                             <th>Test File</th>
+                                            <th>Kategori</th>
                                             <th>Tanggal modul dibuat</th>
                                             <th>Action</th>
                                         </tr>
@@ -248,6 +249,7 @@
                                                     <?php } ?>
                                                 </td>
                                                 <td><a href="<?= base_url("Home/downloadTestFile/$row->id") ?>">Download Test File</a></td>
+                                                <td><?= $row->nama_kategori; ?></td>
                                                 <td><?= $row->created_at; ?></td>
                                                 <td><a href="<?= base_url("Home/editModul/$row->id"); ?>" class="btn btn-warning">Edit</a> <a href="<?= base_url("Home/deleteModul/$row->id") ?>" class="btn btn-danger" onclick="return confirm('Apakah Anda yakin ingin menghapus data ?')">Delete</a> </td>
                                                 <?php $no++; ?>
@@ -322,10 +324,21 @@
     <!-- Page level plugins -->
     <script src="/datatables/jquery.dataTables.min.js"></script>
     <script src="/datatables/dataTables.bootstrap4.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.7.0/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.7.0/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.7.0/js/buttons.print.min.js"></script>
 
     <script>
         $(document).ready(function() {
-            $('#dataTable').DataTable();
+            $('#dataTable').DataTable({
+                dom: 'Bfrtip',
+                buttons: [
+                    'copy', 'csv', 'excel', 'pdf', 'print'
+                ]
+            });
         });
         $('.custom-file-input').on('change', function() {
             //get the file name

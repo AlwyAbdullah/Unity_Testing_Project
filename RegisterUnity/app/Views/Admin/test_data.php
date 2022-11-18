@@ -184,8 +184,6 @@
                     <!-- DataTales Example -->
                     <div class="card shadow mb-4">
                         <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold text-primary">DataTables Example</h6>
-                            <a href="<?= base_url('Home/exportToExcel'); ?>" class="btn btn-primary"><i class="fa fa-download"></i> Download Excel</a>
                             <a href="<?= base_url('Home/addUserTest'); ?>" class="btn btn-primary"><i class="fa fa-user-plus"></i> Add Data Test User</a>
                         </div>
                         <div class="card-body">
