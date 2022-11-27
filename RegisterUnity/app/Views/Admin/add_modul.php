@@ -250,7 +250,7 @@
                                                 </td>
                                                 <td><a href="<?= base_url("Home/downloadTestFile/$row->id") ?>">Download Test File</a></td>
                                                 <td><?= $row->nama_kategori; ?></td>
-                                                <td><?= $row->created_at; ?></td>
+                                                <td><?= $row->tanggal; ?></td>
                                                 <td><a href="<?= base_url("Home/editModul/$row->id"); ?>" class="btn btn-warning">Edit</a> <a href="<?= base_url("Home/deleteModul/$row->id") ?>" class="btn btn-danger" onclick="return confirm('Apakah Anda yakin ingin menghapus data ?')">Delete</a> </td>
                                                 <?php $no++; ?>
                                             </tr>

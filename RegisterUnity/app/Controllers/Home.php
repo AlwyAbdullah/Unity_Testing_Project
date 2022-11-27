@@ -6,12 +6,6 @@ use App\Models\FileModel;
 use App\Models\UserModel;
 use App\Models\TestResultModel;
 use App\Models\KategoriModel;
-// use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
-// use PhpOffice\PhpSpreadsheet\Spreadsheet;
-// use PhpOffice\PhpSpreadsheet\Writer\Xlsx as WriterXlsx;
-use PhpOffice\PhpSpreadsheet\Spreadsheet;
-use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
-use PhpOffice\PhpSpreadsheet\IOFactory;
 
 class Home extends BaseController
 {
@@ -133,7 +127,7 @@ class Home extends BaseController
     {
         if ($this->session->get('level') == "admin") {
             helper(['form']);
-            $data = ["modul" => $this->fileModel->getAllModul(), ''];
+            $data = ['modul' => $this->fileModel->getAllModulFile(), ''];
             $data['kategori'] = $this->kategoriModel->findAll();
             return view('Admin/add_modul', $data);
         }
