@@ -321,6 +321,7 @@ class Home extends BaseController
             'email'         => 'required|min_length[6]|max_length[50]|valid_email',
             'nim'           => 'required|min_length[10]|max_length[20]',
             'password'      => 'required|min_length[8]|max_length[200]',
+            'kategori_id'   => 'required',
             'level'         => 'required'
         ];
 
@@ -453,13 +454,25 @@ class Home extends BaseController
         }
     }
 
-    public function testData()
+    public function testData($id = '')
     {
         if ($this->session->get('level') == "admin") {
-            $data['tests'] = $this->users->getAllTest();
-            $data['allTest'] = $this->testModel->findAll();
+            if ($id != "") {
+                $data['tests'] = $this->testModel->getTestByKategori($id);
+            }
+            else{
+                $data['tests'] = $this->users->getAllTest();
+            }
+            $data['kategori'] = $this->kategoriModel->findAll();
             return view('Admin/test_data', $data);
         }
+        
+        // if ($this->session->get('level') == "admin") {
+        //     $data['tests'] = $this->users->getAllTest();
+        //     // $data['allTest'] = $this->testModel->findAll();
+        //     $data['kategori'] = $this->kategoriModel->findAll();
+        //     return view('Admin/test_data', $data);
+        // }
         return redirect()->to('login');
     }
 

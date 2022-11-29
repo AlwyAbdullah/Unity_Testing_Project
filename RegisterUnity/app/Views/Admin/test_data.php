@@ -185,6 +185,17 @@
                     <div class="card shadow mb-4">
                         <div class="card-header py-3">
                             <a href="<?= base_url('Home/addUserTest'); ?>" class="btn btn-primary"><i class="fa fa-user-plus"></i> Add Data Test User</a>
+                            <div class="dropdown mt-3">
+                                <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Filter Kategori
+                                </button>
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                    <a class="dropdown-item" href="<?= base_url("Home/testData"); ?>">Show All</a>
+                                    <?php foreach($kategori as $kt): ?>
+                                        <a class="dropdown-item" href="<?= base_url("Home/testData/$kt->id_kategori"); ?>"><?= $kt->nama_kategori ?></a>
+                                    <?php endforeach; ?>
+                                </div>
+                            </div>
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">

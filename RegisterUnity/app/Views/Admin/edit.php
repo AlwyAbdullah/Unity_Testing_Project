@@ -196,7 +196,7 @@
                         </div>
                         <div class="form-group">
                             <label for="password"><i class="zmdi zmdi-lock-outline"></i></label>
-                            <input type="text" name="password" id="password" placeholder="Update Password" required />
+                            <input type="text" name="password" id="password" placeholder="Update Password" required minlength="8"/>
                         </div>
                         <div class="form-group">
                             <p>Level</p>
