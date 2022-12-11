@@ -26,6 +26,7 @@ class UserModel extends Model {
     {
         $query = $this->db->table('testresult')
         ->join('users', 'testresult.nim_users = users.nim')
+        ->join('kategori k', 'k.id_kategori = users.kategori_id')
         ->get()
         ->getResult();
         return $query;

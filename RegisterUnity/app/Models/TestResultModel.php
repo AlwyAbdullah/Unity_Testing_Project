@@ -23,17 +23,33 @@ class TestResultModel extends Model {
 
     public function getTestByKategori($id)
     {
-        // $query = $this->db->query('SELECT u.nama, u.nim, t.id_test, t.total_test, t.test_passed, t.test_failed, t.nama_class, t.tanggal_test from testresult t
-        // JOIN users u ON u.nim = t.nim_users
-        // JOIN kategori k ON k.id_kategori = u.kategori_id
-        // WHERE u.kategori_id =' + $id + '')
-        // ->getResult();
-
         $query = $this->db->table('testresult t')
         ->join('users u', 'u.nim = t.nim_users')
         ->join('kategori k', 'k.id_kategori = u.kategori_id')
         ->where('u.kategori_id', $id)
         ->get()
+        ->getResult();
+
+        return $query;
+    }
+
+    public function getTestScore()
+    {
+        $query = $this->db->query("SELECT u.nama, t.test_passed, t.total_test
+        FROM testresult t JOIN users u on u.nim = t.nim_users
+        WHERE t.nama_class = 'Pretest_Test'
+        ORDER BY u.nama ASC")
+        ->getResult();
+
+        return $query;
+    }
+
+    public function getTestScoreAfter()
+    {
+        $query = $this->db->query("SELECT u.nama, t.test_passed, t.total_test
+        FROM testresult t JOIN users u on u.nim = t.nim_users
+        WHERE t.nama_class = 'Modul13_Test'
+        ORDER BY u.nama ASC")
         ->getResult();
 
         return $query;

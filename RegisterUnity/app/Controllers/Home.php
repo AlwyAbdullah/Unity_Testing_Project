@@ -462,17 +462,13 @@ class Home extends BaseController
             }
             else{
                 $data['tests'] = $this->users->getAllTest();
+                $data['testScore'] = $this->testModel->getTestScore();
+                $data['testScoreAft'] = $this->testModel->getTestScoreAfter();
             }
             $data['kategori'] = $this->kategoriModel->findAll();
             return view('Admin/test_data', $data);
         }
         
-        // if ($this->session->get('level') == "admin") {
-        //     $data['tests'] = $this->users->getAllTest();
-        //     // $data['allTest'] = $this->testModel->findAll();
-        //     $data['kategori'] = $this->kategoriModel->findAll();
-        //     return view('Admin/test_data', $data);
-        // }
         return redirect()->to('login');
     }
 

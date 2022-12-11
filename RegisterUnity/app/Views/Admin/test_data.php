@@ -191,7 +191,7 @@
                                 </button>
                                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                     <a class="dropdown-item" href="<?= base_url("Home/testData"); ?>">Show All</a>
-                                    <?php foreach($kategori as $kt): ?>
+                                    <?php foreach ($kategori as $kt) : ?>
                                         <a class="dropdown-item" href="<?= base_url("Home/testData/$kt->id_kategori"); ?>"><?= $kt->nama_kategori ?></a>
                                     <?php endforeach; ?>
                                 </div>
@@ -211,6 +211,7 @@
                                             <th>Nama Class</th>
                                             <th>Tanggal Test</th>
                                             <th>Score</th>
+                                            <th>Kategori</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
@@ -228,6 +229,7 @@
                                                 <td><?= $test->nama_class ?></td>
                                                 <td><?= $test->tanggal_test ?></td>
                                                 <td><?= round(($test->test_passed / $test->total_test) * 100, 2) ?>%</td>
+                                                <td><?= $test->nama_kategori ?></td>
                                                 <td><a href="<?= base_url("home/editTest/$test->id_test"); ?>" class="btn btn-warning">Edit</a> <a href="<?= base_url("home/deleteTest/$test->id_test") ?>" class="btn btn-danger" onclick="return confirm('Apakah Anda yakin ingin menghapus data ?')">Delete</a> </td>
                                             </tr>
                                         <?php $no++;
@@ -235,6 +237,63 @@
 
                                     </tbody>
                                 </table>
+                            </div>
+                        </div>
+
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                        <?php
+                                        $no = 1;
+                                        $jumlahD = 0;
+                                        $jumlahDD = 0;
+                                        foreach ($testScore as $ts) : ?>
+                                            <?php $array[$no-1] = round(($ts->test_passed / $ts->total_test) * 100, 2); ?>
+                                        <?php $no++;
+
+                                        endforeach ?>
+                                        <thead>
+                                            <tr>
+                                                <th>No</th>
+                                                <th>Nama</th>
+                                                <th>Score Sebelum (x1)</th>
+                                                <th>Score Sesudah (x2)</th>
+                                                <th>D = x1-x2 </th>
+                                                <th>D<sup>2</sup></th>
+                                            </tr>
+                                        </thead>
+                                        <?php $no = 1; foreach ($testScoreAft as $tsa) : ?>
+                                            <tr>
+                                                <td><?= $no; ?></td>
+                                                <td><?= $tsa->nama ?></td>
+                                                <td><?= $array[$no-1]; ?></td>
+                                                <td><?= round(($tsa->test_passed / $tsa->total_test) * 100, 2) ?></td>
+                                                <td><?= $array[$no-1] - round(($tsa->test_passed / $tsa->total_test) * 100, 2); ?></td>
+                                                <td><?= pow($array[$no-1] - round(($tsa->test_passed / $tsa->total_test) * 100, 2), 2); ?></td>
+                                                <?php $jumlahD += $array[$no-1] - round(($tsa->test_passed / $tsa->total_test) * 100, 2); ?>
+                                                <?php $jumlahDD += pow($array[$no-1] - round(($tsa->test_passed / $tsa->total_test) * 100, 2), 2); ?>
+                                            </tr>
+                                        <?php $no++; endforeach ?>
+                                            <tr>
+                                                <td colspan="4" class="text-center">Jumlah</td>
+                                                <td><?= round($jumlahD, 2) ?></td>
+                                                <td><?= round($jumlahDD,2) ?></td>
+                                            </tr>
+                                        <?php $s = (1/($no-2))*($jumlahDD-(pow($jumlahD,2)/($no-1))); ?>
+                                        <?php $sn = round(sqrt($s)/sqrt(20),2); ?>
+                                        <?php $t = ($jumlahD/($no-1))/$sn; ?>
+                                    </tbody>
+                                </table>
+                                <?php echo "Hasil S = ". round(sqrt($s),2); ?>
+                                <br>
+                                <?php echo "Hasil T = ". round($t,2); ?>
+                                <p>Hasil t<sub>tabel</sub> dengan nilai alpha 0.05 dan degree of freedom 19 adalah: 2.093</p>
+                                <?php if(abs(round($t, 2)) > 2.093){ ?>
+                                    <p>Hasil analisa dengan menggunakan Paired T-Test adalah terdapat perbedaan nilai statistika yang signifikan sebelum dan sesudah pembelajaran Unity diterapkan</p>
+                                <?php }else{ ?>
+                                    <p>Hasil analisa dengan menggunakan Paired T-Test adalah Tidak tedapat perbedaan yang signifakn sebelum dan sesudah pembelajaran unity diterapkan</p>
+                                <?php } ?>
+                                <br>
                             </div>
                         </div>
                     </div>
