@@ -111,6 +111,12 @@
                     <span>Data Testing</span></a>
             </li>
 
+            <li class="nav-item">
+                <a class="nav-link" href="<?= base_url('Home/pairedTest'); ?>">
+                    <i class="fas fa-light fa-chart-bar"></i>
+                     <span>T-Test Data</span></a>
+            </li>
+
             <!-- Divider -->
             <hr class="sidebar-divider d-none d-md-block">
 

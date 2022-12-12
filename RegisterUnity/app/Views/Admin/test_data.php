@@ -110,6 +110,12 @@
                     <span>Data Testing</span></a>
             </li>
 
+            <li class="nav-item">
+                <a class="nav-link" href="<?= base_url('Home/pairedTest'); ?>">
+                    <i class="fas fa-light fa-chart-bar"></i>
+                     <span>T-Test Data</span></a>
+            </li>
+
             <!-- Divider -->
             <hr class="sidebar-divider d-none d-md-block">
 
@@ -237,63 +243,6 @@
 
                                     </tbody>
                                 </table>
-                            </div>
-                        </div>
-
-                        <div class="card-body">
-                            <div class="table-responsive">
-                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                                        <?php
-                                        $no = 1;
-                                        $jumlahD = 0;
-                                        $jumlahDD = 0;
-                                        foreach ($testScore as $ts) : ?>
-                                            <?php $array[$no-1] = round(($ts->test_passed / $ts->total_test) * 100, 2); ?>
-                                        <?php $no++;
-
-                                        endforeach ?>
-                                        <thead>
-                                            <tr>
-                                                <th>No</th>
-                                                <th>Nama</th>
-                                                <th>Score Sebelum (x1)</th>
-                                                <th>Score Sesudah (x2)</th>
-                                                <th>D = x1-x2 </th>
-                                                <th>D<sup>2</sup></th>
-                                            </tr>
-                                        </thead>
-                                        <?php $no = 1; foreach ($testScoreAft as $tsa) : ?>
-                                            <tr>
-                                                <td><?= $no; ?></td>
-                                                <td><?= $tsa->nama ?></td>
-                                                <td><?= $array[$no-1]; ?></td>
-                                                <td><?= round(($tsa->test_passed / $tsa->total_test) * 100, 2) ?></td>
-                                                <td><?= $array[$no-1] - round(($tsa->test_passed / $tsa->total_test) * 100, 2); ?></td>
-                                                <td><?= pow($array[$no-1] - round(($tsa->test_passed / $tsa->total_test) * 100, 2), 2); ?></td>
-                                                <?php $jumlahD += $array[$no-1] - round(($tsa->test_passed / $tsa->total_test) * 100, 2); ?>
-                                                <?php $jumlahDD += pow($array[$no-1] - round(($tsa->test_passed / $tsa->total_test) * 100, 2), 2); ?>
-                                            </tr>
-                                        <?php $no++; endforeach ?>
-                                            <tr>
-                                                <td colspan="4" class="text-center">Jumlah</td>
-                                                <td><?= round($jumlahD, 2) ?></td>
-                                                <td><?= round($jumlahDD,2) ?></td>
-                                            </tr>
-                                        <?php $s = (1/($no-2))*($jumlahDD-(pow($jumlahD,2)/($no-1))); ?>
-                                        <?php $sn = round(sqrt($s)/sqrt(20),2); ?>
-                                        <?php $t = ($jumlahD/($no-1))/$sn; ?>
-                                    </tbody>
-                                </table>
-                                <?php echo "Hasil S = ". round(sqrt($s),2); ?>
-                                <br>
-                                <?php echo "Hasil T = ". round($t,2); ?>
-                                <p>Hasil t<sub>tabel</sub> dengan nilai alpha 0.05 dan degree of freedom 19 adalah: 2.093</p>
-                                <?php if(abs(round($t, 2)) > 2.093){ ?>
-                                    <p>Hasil analisa dengan menggunakan Paired T-Test adalah terdapat perbedaan nilai statistika yang signifikan sebelum dan sesudah pembelajaran Unity diterapkan</p>
-                                <?php }else{ ?>
-                                    <p>Hasil analisa dengan menggunakan Paired T-Test adalah Tidak tedapat perbedaan yang signifakn sebelum dan sesudah pembelajaran unity diterapkan</p>
-                                <?php } ?>
-                                <br>
                             </div>
                         </div>
                     </div>

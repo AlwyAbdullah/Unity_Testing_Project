@@ -33,10 +33,38 @@ class TestResultModel extends Model {
         return $query;
     }
 
+    public function getTestScoreId($id = '')
+    {
+        $query = $this->db->query("SELECT DISTINCT u.nama, t.test_passed, t.total_test, t.tanggal_test, t.nama_class, k.nama_kategori
+        FROM testresult t 
+        JOIN users u on u.nim = t.nim_users
+        JOIN kategori k on k.id_kategori = u.kategori_id
+        WHERE t.nama_class = 'Pretest_Test' AND u.kategori_id = '{$id}'
+        ORDER BY u.nama ASC")
+        ->getResult();
+
+        return $query;
+    }
+
+    public function getTestScoreAfterId($id = '')
+    {
+        $query = $this->db->query("SELECT DISTINCT u.nama, t.test_passed, t.total_test, t.tanggal_test, t.nama_class, k.nama_kategori
+        FROM testresult t 
+        JOIN users u on u.nim = t.nim_users
+        JOIN kategori k on k.id_kategori = u.kategori_id
+        WHERE t.nama_class = 'Modul13_Test' AND u.kategori_id = '{$id}' 
+        ORDER BY u.nama ASC")
+        ->getResult();
+
+        return $query;
+    }
+
     public function getTestScore()
     {
-        $query = $this->db->query("SELECT u.nama, t.test_passed, t.total_test
-        FROM testresult t JOIN users u on u.nim = t.nim_users
+        $query = $this->db->query("SELECT DISTINCT u.nama, t.test_passed, t.total_test, t.tanggal_test, t.nama_class, k.nama_kategori
+        FROM testresult t 
+        JOIN users u on u.nim = t.nim_users
+        JOIN kategori k on k.id_kategori = u.kategori_id
         WHERE t.nama_class = 'Pretest_Test'
         ORDER BY u.nama ASC")
         ->getResult();
@@ -46,9 +74,11 @@ class TestResultModel extends Model {
 
     public function getTestScoreAfter()
     {
-        $query = $this->db->query("SELECT u.nama, t.test_passed, t.total_test
-        FROM testresult t JOIN users u on u.nim = t.nim_users
-        WHERE t.nama_class = 'Modul13_Test'
+        $query = $this->db->query("SELECT DISTINCT u.nama, t.test_passed, t.total_test, t.tanggal_test, t.nama_class, k.nama_kategori
+        FROM testresult t 
+        JOIN users u on u.nim = t.nim_users
+        JOIN kategori k on k.id_kategori = u.kategori_id
+        WHERE t.nama_class = 'Modul13_Test' 
         ORDER BY u.nama ASC")
         ->getResult();
 

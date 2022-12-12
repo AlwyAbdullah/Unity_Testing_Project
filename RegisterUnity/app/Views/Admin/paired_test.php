@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Add Kategori</title>
+    <title>Test Data</title>
 
     <!-- Custom fonts for this template -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
@@ -17,12 +17,9 @@
     <link href="/css/all.min.css" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 
-    <!-- Font Icon -->
-    <link rel="stylesheet" href="/fonts/material-icon/css/material-design-iconic-font.min.css">
-
-
     <!-- Custom styles for this template -->
     <link href="/css/sb-admin-2.min.css" rel="stylesheet">
+    <!-- <link rel="stylesheet" href="/css/style.css"> -->
 
     <!-- Custom styles for this page -->
     <link href="/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
@@ -113,10 +110,10 @@
                     <span>Data Testing</span></a>
             </li>
 
-            <li class="nav-item">
+            <li class="nav-item active">
                 <a class="nav-link" href="<?= base_url('Home/pairedTest'); ?>">
                     <i class="fas fa-light fa-chart-bar"></i>
-                     <span>T-Test Data</span></a>
+                    <span>T-Test Data</span></a>
             </li>
 
             <!-- Divider -->
@@ -169,6 +166,7 @@
                                 </a>
                             </div>
                         </li>
+
                     </ul>
 
                 </nav>
@@ -178,10 +176,9 @@
                 <div class="container-fluid">
 
                     <!-- Page Heading -->
-                    <h2 class="form-title text-gray-800">Add Kategori</h2>
-                    <?php if (isset($validation)) : ?>
-                        <div class="alert alert-danger"><?= $validation->listErrors() ?></div>
-                    <?php endif; ?>
+                    <h1 class="h3 mb-2 text-gray-800">Data Test User</h1>
+                    <!-- <p class="mb-4">DataTables is a third party plugin that is used to generate the demo table below.
+                        For more information about DataTables, please visit the <a target="_blank" href="https://datatables.net">official DataTables documentation</a>.</p> -->
                     <?php if (!empty(session()->getFlashdata('message'))) : ?>
                         <div class="alert alert-success alert-dismissible fade show" role="alert">
                             <?php echo session()->getFlashdata('message'); ?>
@@ -190,56 +187,91 @@
                             </button>
                         </div>
                     <?php endif; ?>
-                    <form method="POST" class="register-form" id="register-form" action="<?= base_url('Home/saveKategori'); ?>">
-                        <div class="form-group">
-                            <!-- <label for="name"><i class="zmdi zmdi-account material-icons-name"></i></label> -->
-                            <input type="text" name="nama_kategori" id="nama_kategori" placeholder="Nama Kategori" required class="form-control" />
-                        </div>
-                        <div class="form-group form-button">
-                            <input type="submit" name="signup" id="signup" class="form-submit btn btn-primary" value="Save" />
-                        </div>
-                    </form>
                     <!-- DataTales Example -->
-
-                </div>
-                <!-- /.container-fluid -->
-                <div class="container-fluid mt-3">
                     <div class="card shadow mb-4">
                         <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold">List Modul</h6>
+                            <div class="dropdown mt-3">
+                                <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Filter Kategori
+                                </button>
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                    <a class="dropdown-item" href="<?= base_url("Home/PairedTest"); ?>">Show All</a>
+                                    <?php foreach ($kategori as $kt) : ?>
+                                        <a class="dropdown-item" href="<?= base_url("Home/pairedTest/$kt->id_kategori"); ?>"><?= $kt->nama_kategori ?></a>
+                                    <?php endforeach; ?>
+                                </div>
+                            </div>
                         </div>
                         <div class="card-body">
-                            <!-- <hr /> -->
                             <div class="table-responsive">
                                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                    <?php
+                                    $no = 1;
+                                    $jumlahD = 0;
+                                    $jumlahDD = 0;
+                                    foreach ($testScore as $ts) : ?>
+                                        <?php $array[$no - 1] = round(($ts->test_passed / $ts->total_test) * 100, 2); ?>
+                                        <?php $arrayClass[$no - 1] = $ts->nama_class; ?>
+                                    <?php $no++;
+
+                                    endforeach ?>
                                     <thead>
                                         <tr>
                                             <th>No</th>
-                                            <th>Nama Kategori</th>
-                                            <th>Action</th>
+                                            <th>Nama</th>
+                                            <th>Kategori</th>
+                                            <th>Tanggal Test</th>
+                                            <th>Nama Class</th>
+                                            <th>Score Sebelum (x1)</th>
+                                            <th>Score Sesudah (x2)</th>
+                                            <th>D = x1-x2 </th>
+                                            <th>D<sup>2</sup></th>
                                         </tr>
                                     </thead>
-                                    <tbody>
-                                        <?php
-                                        $no = 1;
-                                        foreach ($kategori as $row) {
-                                        ?>
-                                            <tr>
-                                                <td><?= $no; ?></td>
-                                                <td><?= $row->nama_kategori; ?></td>
-                                                <!-- Mengganti dengan form agar dapat download from database -->
-                                                <td><a href="<?= base_url("Home/editKategori/$row->id_kategori"); ?>" class="btn btn-warning">Edit</a> <a href="<?= base_url("Home/deleteKategori/$row->id_kategori") ?>" class="btn btn-danger" onclick="return confirm('Apakah Anda yakin ingin menghapus data Kategori?')">Delete</a> </td>
-                                                <?php $no++; ?>
-                                            </tr>
-                                        <?php
-                                        }
-                                        ?>
-                                    </tbody>
-                                </table>
+                                    <?php $no = 1;
+                                    foreach ($testScoreAft as $tsa) : ?>
+                                        <tr>
+                                            <td><?= $no; ?></td>
+                                            <td><?= $tsa->nama ?></td>
+                                            <td><?= $tsa->nama_kategori ?></td>
+                                            <td><?= $tsa->tanggal_test ?></td>
+                                            <td><?= $arrayClass[$no - 1]; ?>  <?= $tsa->nama_class ?></td>
+                                            <td><?= $array[$no - 1]; ?></td>
+                                            <td><?= round(($tsa->test_passed / $tsa->total_test) * 100, 2) ?></td>
+                                            <td><?= $array[$no - 1] - round(($tsa->test_passed / $tsa->total_test) * 100, 2); ?></td>
+                                            <td><?= pow($array[$no - 1] - round(($tsa->test_passed / $tsa->total_test) * 100, 2), 2); ?></td>
+                                            <?php $jumlahD += $array[$no - 1] - round(($tsa->test_passed / $tsa->total_test) * 100, 2); ?>
+                                            <?php $jumlahDD += pow($array[$no - 1] - round(($tsa->test_passed / $tsa->total_test) * 100, 2), 2); ?>
+                                        </tr>
+                                    <?php $no++;
+                                    endforeach ?>
+                                    <?php if ($no != 1 && $no != 2) { ?>
+                                        <?php $s = (1 / ($no - 2)) * ($jumlahDD - (pow($jumlahD, 2) / ($no - 1))); ?>
+                                        <?php $sn = round(sqrt($s) / sqrt(20), 2); ?>
+                                        <?php $t = ($jumlahD / ($no - 1)) / $sn; ?>
+                                        </tbody>
+                                    </table>
+                                    <?php echo "Hasil S = " . round(sqrt($s), 2); ?>
+                                    <br>
+                                    <?php echo "Hasil T = " . round($t, 2); ?>
+                                    <p>Hasil t<sub>tabel</sub> dengan nilai alpha 0.05 dan degree of freedom 19 adalah: 2.093</p>
+                                    <?php if (abs(round($t, 2)) > 2.093) { ?>
+                                        <p>Hasil analisa dengan menggunakan Paired T-Test adalah terdapat perbedaan nilai statistika yang signifikan sebelum dan sesudah pembelajaran Unity diterapkan</p>
+                                    <?php } else { ?>
+                                        <p>Hasil analisa dengan menggunakan Paired T-Test adalah Tidak tedapat perbedaan yang signifakn sebelum dan sesudah pembelajaran unity diterapkan</p>
+                                    <?php } ?>
+                                <?php } else { ?>
+                                        </tbody>
+                                    </table>
+                                    <p>Data tidak dapat diproses</p>
+                                    <p>Data harus lebih dari 2 agar dapat diproses dengan T-Paired test</p>
+                                    <?php } ?>
+                            <br>
                             </div>
                         </div>
                     </div>
                 </div>
+                <!-- /.container-fluid -->
 
             </div>
             <!-- End of Main Content -->
@@ -298,6 +330,27 @@
     <!-- Custom scripts for all pages-->
     <script src="/js/sb-admin-2.min.js"></script>
 
+    <!-- Page level plugins -->
+    <script src="/datatables/jquery.dataTables.min.js"></script>
+    <script src="/datatables/dataTables.bootstrap4.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.7.0/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.7.0/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.7.0/js/buttons.print.min.js"></script>
+
+
+    <script>
+        $(document).ready(function() {
+            $('#dataTable').DataTable({
+                dom: 'Bfrtip',
+                buttons: [
+                    'copy', 'csv', 'excel', 'pdf', 'print'
+                ]
+            });
+        });
+    </script>
 </body>
 
 </html>

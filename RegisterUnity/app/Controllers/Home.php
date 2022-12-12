@@ -459,16 +459,30 @@ class Home extends BaseController
         if ($this->session->get('level') == "admin") {
             if ($id != "") {
                 $data['tests'] = $this->testModel->getTestByKategori($id);
-            }
-            else{
+            } else {
                 $data['tests'] = $this->users->getAllTest();
-                $data['testScore'] = $this->testModel->getTestScore();
-                $data['testScoreAft'] = $this->testModel->getTestScoreAfter();
             }
             $data['kategori'] = $this->kategoriModel->findAll();
             return view('Admin/test_data', $data);
         }
-        
+
+        return redirect()->to('login');
+    }
+
+    public function pairedTest($id = '')
+    {
+        if ($this->session->get('level') == "admin") {
+            if ($id != "") {
+                $data['testScore'] = $this->testModel->getTestScoreId($id);
+                $data['testScoreAft'] = $this->testModel->getTestScoreAfterId($id);
+            } else {
+                $data['testScore'] = $this->testModel->getTestScore();
+                $data['testScoreAft'] = $this->testModel->getTestScoreAfter();
+            }
+            $data['kategori'] = $this->kategoriModel->findAll();
+            return view('Admin/paired_test', $data);
+        }
+
         return redirect()->to('login');
     }
 
