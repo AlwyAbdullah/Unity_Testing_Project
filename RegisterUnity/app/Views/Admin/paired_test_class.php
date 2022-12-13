@@ -191,16 +191,6 @@
                     <div class="card shadow mb-4">
                         <div class="card-header py-3">
                             <div class="dropdown mt-3">
-                                <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    Filter Kategori
-                                </button>
-                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                    <a class="dropdown-item" href="<?= base_url("Home/PairedTest"); ?>">Show All</a>
-                                    <?php foreach ($kategori as $kt) : ?>
-                                        <a class="dropdown-item" href="<?= base_url("Home/pairedTest/$kt->id_kategori"); ?>"><?= $kt->nama_kategori ?></a>
-                                    <?php endforeach; ?>
-                                </div>
-                                <hr>
                                 <form method="POST" class="register-form" id="register-form" action="<?= base_url('Home/showPairedData'); ?>">
                                     <div class="form-group">
                                         <p>Paired t-test by class</p>

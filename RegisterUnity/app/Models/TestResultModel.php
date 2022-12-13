@@ -84,6 +84,40 @@ class TestResultModel extends Model {
 
         return $query;
     }
+
+    public function getClassName()
+    {
+        $query = $this->db->query("SELECT DISTINCT nama_class FROM testresult")
+        ->getResult();
+
+        return $query; 
+    }
+
+    public function getDataByClassName1($name = '')
+    {
+        $query = $this->db->query("SELECT DISTINCT u.nama, t.test_passed, t.total_test, t.tanggal_test, t.nama_class, k.nama_kategori
+        FROM testresult t 
+        JOIN users u on u.nim = t.nim_users
+        JOIN kategori k on k.id_kategori = u.kategori_id
+        WHERE t.nama_class = '{$name}'
+        ORDER BY u.nama ASC")
+        ->getResult();
+
+        return $query;
+    }
+
+    public function getDataByClassName2($name = '')
+    {
+        $query = $this->db->query("SELECT DISTINCT u.nama, t.test_passed, t.total_test, t.tanggal_test, t.nama_class, k.nama_kategori
+        FROM testresult t 
+        JOIN users u on u.nim = t.nim_users
+        JOIN kategori k on k.id_kategori = u.kategori_id
+        WHERE t.nama_class = '{$name}'
+        ORDER BY u.nama ASC")
+        ->getResult();
+
+        return $query;
+    }
     
 }
 

@@ -480,10 +480,36 @@ class Home extends BaseController
                 $data['testScoreAft'] = $this->testModel->getTestScoreAfter();
             }
             $data['kategori'] = $this->kategoriModel->findAll();
+            $data['class'] = $this->testModel->getClassName();
             return view('Admin/paired_test', $data);
         }
 
         return redirect()->to('login');
+    }
+
+    public function showPairedData()
+    {
+        //include helper form
+        helper(['form']);
+        //set rules validation form
+        $rules = [
+            'class1'             => 'required',
+            'class2'             => 'required'
+        ];
+
+        if ($this->validate($rules)) {
+            $data = [
+                'class1'         => $this->request->getVar('class1'),
+                'class2'        => $this->request->getVar('class2'),
+            ];
+            $data['testScore'] = $this->testModel->getDataByClassName1($data['class1']);
+            $data['testScoreAft'] = $this->testModel->getDataByClassName2($data['class2']);
+            $data['class'] = $this->testModel->getClassName();
+            return view('Admin/paired_test_class', $data);
+        } else{
+            $data['validation'] = $this->validator;
+            return redirect()->back();
+        }
     }
 
     public function profile()
