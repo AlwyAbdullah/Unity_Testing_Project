@@ -114,7 +114,7 @@
             <li class="nav-item">
                 <a class="nav-link" href="<?= base_url('Home/pairedTest'); ?>">
                     <i class="fas fa-light fa-chart-bar"></i>
-                     <span>T-Test Data</span></a>
+                    <span>T-Test Data</span></a>
             </li>
 
             <!-- Divider -->
@@ -287,13 +287,16 @@
             type: 'bar',
             data: {
                 labels: [
-                    'Jumlah yang mengikuti Course'
+                    <?php foreach($kategoriData as $kd){ 
+                        echo '"'. $kd->nama_kategori . '",';
+                    } ?>
                 ],
                 datasets: [{
-                    label: 'Total Data',
+                    label: 'Total Users per Kategori',
                     data: [
-                        <?php $no = 0; foreach ($users as $row) { ?>
-                        <?php $no++; }  echo $no;?>
+                        <?php foreach ($kategoriData as $kd) {
+                            echo '"'. $kd->total . '",';
+                          } ?>
                     ],
                     backgroundColor: [
                         'rgba(255, 99, 132, 0.2)',

@@ -23,7 +23,8 @@ class Home extends BaseController
         if ($this->session->get('level') == "admin") {
             $data = [
                 'users' => $this->users->getUsers(),
-                'tests' => $this->users->getAllTest()
+                'tests' => $this->users->getAllTest(),
+                'kategoriData' => $this->users->getUsersByKategori()
             ];
             return view('Admin/index', $data);
         }
@@ -502,8 +503,8 @@ class Home extends BaseController
                 'class1'         => $this->request->getVar('class1'),
                 'class2'        => $this->request->getVar('class2'),
             ];
-            $data['testScore'] = $this->testModel->getDataByClassName1($data['class1']);
-            $data['testScoreAft'] = $this->testModel->getDataByClassName2($data['class2']);
+            $data['testScore'] = $this->testModel->getDataByClassName($data['class1']);
+            $data['testScoreAft'] = $this->testModel->getDataByClassName($data['class2']);
             $data['class'] = $this->testModel->getClassName();
             return view('Admin/paired_test_class', $data);
         } else{

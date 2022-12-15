@@ -271,7 +271,7 @@
                                 <?php if (abs(round($t, 2)) > 2.093) { ?>
                                     <p>Hasil analisa dengan menggunakan Paired T-Test adalah terdapat perbedaan nilai statistika yang signifikan sebelum dan sesudah pembelajaran Unity diterapkan</p>
                                 <?php } else { ?>
-                                    <p>Hasil analisa dengan menggunakan Paired T-Test adalah Tidak tedapat perbedaan yang signifakn sebelum dan sesudah pembelajaran unity diterapkan</p>
+                                    <p>Hasil analisa dengan menggunakan Paired T-Test adalah Tidak tedapat perbedaan yang signifikan sebelum dan sesudah pembelajaran unity diterapkan</p>
                                 <?php } ?>
                             <?php } else { ?>
                                 </tbody>

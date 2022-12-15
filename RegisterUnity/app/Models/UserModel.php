@@ -41,6 +41,16 @@ class UserModel extends Model {
         ->getResult();
         return $query;
     }
+
+    public function getUsersByKategori()
+    {
+        $query = $this->db->query("SELECT k.nama_kategori, COUNT(u.kategori_id) as total from kategori k
+        JOIN users u on k.id_kategori = u.kategori_id
+        GROUP BY k.nama_kategori")
+        ->getResult();
+
+        return $query;
+    }
 }
 
 /* End of file ModelName.php */
